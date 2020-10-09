@@ -24,7 +24,7 @@ public class CategoriaServiceImpl implements CategoriaService {
 	@Transactional
 	public Long salvar(Categoria categoria) {
 
-		valida(categoria.getNome(), categoria);
+		valida(categoria.getNome());
 		Categoria categoriaSalva = categoriaRepository.save(categoria);
 		return categoriaSalva.getId();
 	}
@@ -49,17 +49,17 @@ public class CategoriaServiceImpl implements CategoriaService {
 
 	}
 	
-	private void valida (String nome, Categoria categoria) {
+	private void valida (String nome) {
 		if (nome.isEmpty()) {
 			throw new IllegalArgumentException("O nome não pode ser vazio");
 		}
 		
-		List<Categoria> categorias = new ArrayList<>();
-		Iterable<Categoria> nomeExiste = categoriaRepository.findByNome(nome);
-		nomeExiste.forEach(categorias::add);
-		
-		
-		if(categorias instanceof ConstraintViolationException){
+		//verifcar se a categoria existe
+		List<Categoria> categorias = categoriaRepository.findByNomeMatheus(nome);
+
+
+		boolean isCategoriaExiste = !categorias.isEmpty();
+		if(isCategoriaExiste){
 			throw new DataIntegrityViolationException("Nome existente", null);
 		}
 		
