@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;1,500&display=swap&family=Recursive:wght@600&display=swap&family=Poppins:wght@600&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="/materialize/css/materialize.css"  media="screen,projection"/>
+	<link type="text/css" rel="stylesheet" href="/materialize/css/materialize.min.css"  media="screen,projection"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+	<script type="text/javascript" src="/js/jquery-3.5.1.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.min.js"></script>
+	<script type="text/javascript" src="/js/script.js"></script>
+	<link type="text/css" rel="stylesheet" href="/css/main.css"/>
+	<link type="text/css" rel="stylesheet" href="/css/style.css"/>
+
+	<title>Cadastro de Categorias</title>
+	<script type="text/javascript">
+	/*Mascara de preco*/
+	$(document).ready(function (){
+		$("#price").mask("999.999.990,00", {reverse:true});
+	})
+	/*Para iniciar o sidenav*/
+	 $(document).ready(function(){
+    	$('.sidenav').sidenav();
+ 	 });
+	
+	/*Efeito nos inputs*/
+	 $(document).ready(function() {
+		 $('input#input_text, textarea#textarea2').characterCounter();
+	});
+		        
+
+	</script>
+</head>
+<body>
+	<nav>
+		<div class="nav-wrapper">
+			<a href="" class="brand-logo center">Logo</a>
+			<a href="#" data-target="slide-out" class="sidenav-trigger left show-on-large"><i class="material-icons">menu</i></a>
+			<ul class="right hide-on-med-and-down">
+				<!-- <li><a href="sass.html">Sass</a></li>
+				<li><a href="badges.html">Compoentes</a></li>
+				<li class="active"><a href="collapsible.html">Javascript</a></li> -->
+			</ul>			
+			</div>
+		</nav>
+		
+		<!-- SideNav -->
+		<ul id="slide-out" class="sidenav sidenav-fixed">
+    		<li>
+	    		<div class="user-view">
+	      			<div class="background">
+	       				 <img src="/img/background.jpg">
+	      			</div>
+				      <a href="#user"><img class="circle" src="/img/logo.png"></a>
+				      <a href="#name"><span class="white-text name">Sistema de Vendas</span></a>
+				      <a href="#email"><span class="white-text email">ludmay4@gmail.com</span></a>
+	    		</div>
+    		</li>
+		    <li><a href="#!"><i class="material-icons">home</i>Home</a></li>
+		    <li><a href="/cadPessoa">Cadastro de Clientes</a></li>
+		    <li><a href="/cadProduto">Cadastro de Produtos</a></li>
+		    <li><a href="/cadCategoria">Cadastro de Categoria</a></li>
+		    <li><a href="/pedidos">Pedidos</a></li>
+		    <li><div class="divider"></div></li>
+		    <li><a class="subheader">Subheader</a></li>
+		    <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+ 	 </ul>
+ 
+ 	<h5 id="title">Cadastro de Categorias</h5>
+
+	<main>	
+		<div class="container">
+			 <form id="formCategoria" action="salvarcategoria" method="post" th:object="${categoriasobj}">
+					<div class="row">				
+						<div class="input-field col s4">
+							<label for="id">Id:</label>
+							<input id="id" name="id" readonly="readonly" th:field="*{id}">			
+						</div>
+						
+						<div class="input-field col s4">
+							<label for="name" class="active">Nome:</label>
+							<input id="name" name="name" th:field="*{name}" class="validate" type="text">			
+						</div>
+					</div>
+					
+				   <div class="row btns">
+				   		
+				   		<div class="col s3">
+				   			<input id="btnSalvar" type="submit" value="Salvar" class="waves-effect waves-light btn-large white-text">
+				   		</div>
+				   		<div class="col s3">
+				   			<button id="btnNovo"  onclick="document.getElementById('formPessoa').reset();"
+				   			class="white-text waves-effect waves-light btn-large">Novo</button>
+				   		</div>
+				   </div>
+			 </form>	
+		</div>
+	</main>
+	<br/>
+	<br/>
+	<form id="formListaCategoria">
+		<table class="highlight">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Categoria</th>					
+					
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="cat : ${categorias}">
+					<td  th:text="${cat.id}"></td>
+					<td  th:text="${cat.name}"></td>					
+					<!--  <td class="center"><a th:href="@{/editarproduto/{idproduto}(idproduto=${produto.id})}">Editar</a></td>
+					<td class="center"><a th:href="@{/excluirproduto/{idproduto}(idproduto=${produto.id})}">Excluir</a></td>					
+				-->
+				</tr>
+			</tbody>		
+		</table>	
+	</form>
+	<br/>
+	<br/>
+	<footer class="page-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col 16 s12">
+					<h5 class="white-text">Footer Content</h5>
+					<p>Essa unidade estruturada
+				  	   apresenta um sentido completo 
+				  	   e tem um objetivo comunicativo</p>
+				</div>
+				<div class="col 14 offset-12 s12">
+					<h5 class="white-text">Links</h5>
+					<ul>
+						<li><a class="grey-text text-lighten-3" href="">Link 1</a></li>
+						<li><a class="grey-text text-lighten-3" href="">Link 2</a></li>
+						<li><a class="grey-text text-lighten-3" href="">Link 3</a></li>					
+					</ul>
+				</div>			
+			</div>		
+		</div>
+		<div class="footer-copyright">
+			<div class="container">
+				 © 2020 Todos os direitos reservados
+				 <a class="grey-text text-lighten-4 right" href="">More Links</a>
+			</div>
+		</div>		
+	</footer>
+			
+
+	<script type="text/javascript" src="/materialize/js/materialize.min.js"></script>
+	<script type="text/javascript" src="/materialize/js/materialize.js"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+            
+</body>
+</html>

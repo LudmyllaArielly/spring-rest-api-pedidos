@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+	<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;1,500&display=swap&family=Recursive:wght@600&display=swap&family=Poppins:wght@600&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link type="text/css" rel="stylesheet" href="/materialize/css/materialize.css"  media="screen,projection"/>
+	<link type="text/css" rel="stylesheet" href="/materialize/css/materialize.min.css"  media="screen,projection"/>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+	<script type="text/javascript" src="/js/jquery-3.5.1.min.js"></script>
+	<script type="text/javascript" src="/js/jquery.mask.min.js"></script>
+	<script type="text/javascript" src="/js/script.js"></script>
+	<link type="text/css" rel="stylesheet" href="/css/main.css"/>
+	<link type="text/css" rel="stylesheet" href="/css/style.css"/>
+
+	<title>Pedidos</title>
+	<script type="text/javascript">
+	/*Mascara de preco*/
+	$(document).ready(function (){
+		$("#priceUnit").mask("999.999.990,00", {reverse:true});
+		$("#priceTotal").mask("999.999.990,00", {reverse:true});
+	})
+	/*Para iniciar o sidenav*/
+	 $(document).ready(function(){
+    	$('.sidenav').sidenav();
+ 	 });
+	
+	/*Efeito nos inputs*/
+	 $(document).ready(function() {
+		 $('input#input_text, textarea#textarea2').characterCounter();
+	});
+	
+	/*Para abrir o modal com gatilho*/
+	document.addEventListener('DOMContentLoaded', function() {
+	    var elems = document.querySelectorAll('.modal');
+	    var instances = M.Modal.init(elems, options);
+ 	 });
+
+	  // Or with jQuery
+	
+	  $(document).ready(function(){
+	    $('.modal').modal();
+	  });
+	 
+	  
+	  
+	  $('#check').value;
+	  
+	  </script>
+
+	
+</head>
+<body>
+	<nav>
+		<div class="nav-wrapper">
+			<a href="" class="brand-logo center">Logo</a>
+			<a href="#" data-target="slide-out" class="sidenav-trigger left show-on-large"><i class="material-icons">menu</i></a>
+			<ul class="right hide-on-med-and-down">
+				<!-- <li><a href="sass.html">Sass</a></li>
+				<li><a href="badges.html">Compoentes</a></li>
+				<li class="active"><a href="collapsible.html">Javascript</a></li> -->
+			</ul>			
+			</div>
+		</nav>
+		
+		<!-- SideNav -->
+		<ul id="slide-out" class="sidenav sidenav-fixed">
+    		<li>
+	    		<div class="user-view">
+	      			<div class="background">
+	       				 <img src="/img/background.jpg">
+	      			</div>
+				      <a href="#user"><img class="circle" src="/img/logo.png"></a>
+				      <a href="#name"><span class="white-text name">Sistema de Vendas</span></a>
+				      <a href="#email"><span class="white-text email">ludmay4@gmail.com</span></a>
+	    		</div>
+    		</li>
+		    <li><a href="#!"><i class="material-icons">home</i>Home</a></li>
+		    <li><a href="/cadPessoa">Cadastro de Clientes</a></li>
+		    <li><a href="/cadProduto">Cadastro de Produtos</a></li>
+		    <li><a href="/cadCategoria">Cadastro de Categorias</a></li>
+		    <li><a href="/pedidos">Pedidos</a></li>
+		    <li><div class="divider"></div></li>
+		    <li><a class="subheader">Subheader</a></li>
+		    <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+ 	 </ul>
+ 
+ 	<h5 id="title">Pedidos</h5>
+ 	<main>	
+		<div class="container">
+			 <form id="formPedido" action="salvarpedido" method="post" th:object="${pedidoobj}">
+					<div class="row">				
+						<div class="input-field col s4">
+							<label for="id">Id:</label>
+							<input id="id" name="id" readonly="readonly">			
+						</div>
+						
+						<div class="input-field col s4">
+							<label for="requestDate" class="active">Data do pedido:</label>
+							<input id="requestDate" name="requestDate" class="validate" type="datetime-local">			
+						</div>
+					</div>
+					
+				   <div class="row">
+				   		<div class="input-field col s4">
+				   			<label for="priceTotal" class="active">Valor Total:</label>
+							<input id="priceTotal" name="priceTotal" 
+								class="validate" type="text">
+				   		</div>
+					
+				   		<div class="input-field col s4">
+						<!-- Modal Trigger -->
+  							<button data-target="modal1" class="btn modal-trigger">Modal</button>
+				   		</div>				   		
+				   </div>
+				   
+				  
+				  
+						  	
+		  
+				  <!-- Modal Structure -->
+				  <div id="modal1" class="modal">
+				    <div class="modal-content">
+				    <label >Produto</label>
+				   
+				      <h4>Modal Header</h4>
+				      <form id="formProd">				      
+						<table class="highlight">
+							<thead>
+								<tr>
+									<th>Id</th>
+									<th>Cód</th>
+									<th>Nome do Produto</th>
+									<th>Preço</th>									
+									<th>Marca</th>
+									<th>Peso</th>
+									
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="produto : ${produtos}">
+									<td class="center" th:text="${produto.id}"></td>
+									<td class="center" th:text="${produto.code}"></td>
+									<td th:text="${produto.name}"></td>
+									<td class="center" th:text="${produto.price}"></td>							
+									<td th:text="${produto.mark}"></td>
+									<td class="center" th:text="${produto.peso}"></td>
+									
+									 <!--  <td class="center"><a th:href="@{/addproduto/{idproduto}(idproduto=${produto.id})}">Adicionar</a></td>-->
+									<td class="center">
+									   <p>
+      									<label>
+									  <input id="chec" type="checkbox" th:value="${produto.id}" />
+       									 <span>Adicionar</span>
+									</label>
+									</p>
+									</td>
+									<!-- <td th:text="${produto.categoria}"></td>
+									<td class="center"><a th:href="@{/editarproduto/{idproduto}(idproduto=${produto.id})}">Editar</a></td>
+									<td class="center"><a th:href="@{/excluirproduto/{idproduto}(idproduto=${produto.id})}">Excluir</a></td>					
+								-->
+								</tr>
+							</tbody>		
+						</table>	
+					</form>
+				    </div>
+				    <div class="modal-footer">
+				      <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+				    </div>
+				  </div>
+				  <br/>			
+				   <div class="row btns">
+				   		
+				   		<div class="col s3">
+				   			<input id="btnSalvar" type="submit" value="Salvar" class="waves-effect waves-light btn-large white-text">
+				   		</div>
+				   		<div class="col s3">
+				   			<button id="btnNovo"  onclick="document.getElementById('formPessoa').reset();"
+				   			class="white-text waves-effect waves-light btn-large">Novo</button>
+				   		</div>
+				   </div>
+				 </form>
+				 <br/>
+				 <br/>
+				 <form action="addproduto">
+				 <h5>Pedidos</h5>
+						<table class="highlight">
+							<thead>
+								<tr>
+									<th>Id</th>
+									<th>Name</th>
+									<th>Preço</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="produto : ${produtos}" >
+									<td  th:text="${produto.id}"></td>
+									<td  th:text="${produto.name}"></td>
+									<td th:text="${produto.price}"></td>
+								
+									<!-- <td th:text="${produto.categoria}"></td>
+									<td class="center"><a th:href="@{/editarproduto/{idproduto}(idproduto=${produto.id})}">Editar</a></td>
+									<td class="center"><a th:href="@{/excluirproduto/{idproduto}(idproduto=${produto.id})}">Excluir</a></td>					
+								-->
+								</tr>
+							</tbody>		
+						</table>	
+					</form>
+		</div>
+	</main>
+
+	
+	<br/>
+	<br/>
+	
+	<br/>
+	<br/>
+	<footer class="page-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col 16 s12">
+					<h5 class="white-text">Footer Content</h5>
+					<p>Essa unidade estruturada
+				  	   apresenta um sentido completo 
+				  	   e tem um objetivo comunicativo</p>
+				</div>
+				<div class="col 14 offset-12 s12">
+					<h5 class="white-text">Links</h5>
+					<ul>
+						<li><a class="grey-text text-lighten-3" href="">Link 1</a></li>
+						<li><a class="grey-text text-lighten-3" href="">Link 2</a></li>
+						<li><a class="grey-text text-lighten-3" href="">Link 3</a></li>					
+					</ul>
+				</div>			
+			</div>		
+		</div>
+		<div class="footer-copyright">
+			<div class="container">
+				 © 2020 Todos os direitos reservados
+				 <a class="grey-text text-lighten-4 right" href="">More Links</a>
+			</div>
+		</div>		
+	</footer>
+			
+
+	<script type="text/javascript" src="/materialize/js/materialize.min.js"></script>
+	<script type="text/javascript" src="/materialize/js/materialize.js"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+            
+</body>
+</html>
