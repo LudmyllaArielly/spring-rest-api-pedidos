@@ -21,6 +21,8 @@ public class Pessoa implements Serializable {
     private String name;
     private String cpf;
     private String senha;
+    private String raca;
+    private Integer tamanho;
 
 
     public Long getId() {
@@ -53,6 +55,22 @@ public class Pessoa implements Serializable {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public String getRaca() {
+        return raca;
+    }
+
+    public void setRaca(String raca) {
+        this.raca = raca;
+    }
+
+    public Integer getTamanho() {
+        return tamanho;
+    }
+
+    public void setTamanho(Integer tamanho) {
+        this.tamanho = tamanho;
     }
 
     @Override

@@ -4,6 +4,8 @@ public class PessoaDto {
     private String name;
     private String cpf;
     private String senha;
+    private String cor;
+    private Integer altura;
 
     public String getCpf() {
         return cpf;
@@ -27,5 +29,21 @@ public class PessoaDto {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public String getCor() {
+        return cor;
+    }
+
+    public void setCor(String cor) {
+        this.cor = cor;
+    }
+
+    public Integer getAltura() {
+        return altura;
+    }
+
+    public void setAltura(Integer altura) {
+        this.altura = altura;
     }
 }

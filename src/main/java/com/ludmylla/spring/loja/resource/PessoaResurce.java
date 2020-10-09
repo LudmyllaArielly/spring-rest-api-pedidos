@@ -6,6 +6,7 @@ import java.util.List;
 import com.ludmylla.spring.loja.dto.PessoaDto;
 import com.ludmylla.spring.loja.dto.PessoaGetDto;
 import com.ludmylla.spring.loja.dto.PessoaPUTDto;
+import com.ludmylla.spring.loja.mapper.PessoaMapper;
 import com.ludmylla.spring.loja.model.Pessoa;
 import com.ludmylla.spring.loja.service.PessoaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,12 @@ public class PessoaResurce {
     @PostMapping(path = "/pessoa")
     public ResponseEntity<Long> cadastrarPessoa(@RequestBody PessoaDto pessoaDto) {
 
-        Pessoa pessoa = new Pessoa();
-        pessoa.setCpf(pessoaDto.getCpf());
-        pessoa.setName(pessoaDto.getName());
-        pessoa.setSenha(pessoaDto.getSenha());
+        Pessoa pessoa = PessoaMapper.INSTANCE.dtoToPessoa(pessoaDto);
+
+//        Pessoa pessoa = new Pessoa();
+//        pessoa.setCpf(pessoaDto.getCpf());
+//        pessoa.setName(pessoaDto.getName());
+//        pessoa.setSenha(pessoaDto.getSenha());
 
         //insert
         Long id = pessoaService.salvar(pessoa);
@@ -43,17 +46,18 @@ public class PessoaResurce {
     public ResponseEntity<List<PessoaGetDto>> listarPessoa() {
 
         List<Pessoa> pessoas = pessoaService.buscar();
+        List<PessoaGetDto> list = PessoaMapper.INSTANCE.ListPessoaToListPessoaGetDto(pessoas);
 
-        List<PessoaGetDto> result = new ArrayList<>();
-        for (int i = 0; i < pessoas.size(); i++) {
-            PessoaGetDto pessoaGetDto = new PessoaGetDto();
-            pessoaGetDto.setCpf(pessoas.get(i).getCpf());
-            pessoaGetDto.setName(pessoas.get(i).getName());
-            result.add(pessoaGetDto);
+//        List<PessoaGetDto> result = new ArrayList<>();
+//        for (int i = 0; i < pessoas.size(); i++) {
+//            PessoaGetDto pessoaGetDto = new PessoaGetDto();
+//            pessoaGetDto.setCpf(pessoas.get(i).getCpf());
+//            pessoaGetDto.setName(pessoas.get(i).getName());
+//            result.add(pessoaGetDto);
+//
+//        }
 
-        }
-
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(list);
 
     }
 
