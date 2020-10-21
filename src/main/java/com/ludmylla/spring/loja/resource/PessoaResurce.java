@@ -41,25 +41,19 @@ public class PessoaResurce {
 
     }
 
-
-    @GetMapping(path = "/pessoa")
-    public ResponseEntity<List<PessoaGetDto>> listarPessoa() {
-
-        List<Pessoa> pessoas = pessoaService.buscar();
-        List<PessoaGetDto> list = PessoaMapper.INSTANCE.ListPessoaToListPessoaGetDto(pessoas);
-
-//        List<PessoaGetDto> result = new ArrayList<>();
-//        for (int i = 0; i < pessoas.size(); i++) {
-//            PessoaGetDto pessoaGetDto = new PessoaGetDto();
-//            pessoaGetDto.setCpf(pessoas.get(i).getCpf());
-//            pessoaGetDto.setName(pessoas.get(i).getName());
-//            result.add(pessoaGetDto);
-//
-//        }
-
-        return ResponseEntity.ok(list);
+    @PostMapping(path = "/cadastroCliente")
+    public ResponseEntity<String> cadastrarCliente(@RequestBody PessoaDto pessoaDto) {
+        //validaçoes
+        //banco verificação
+        //salvei
+        //retonei
+        //exibindo a msg
+        return ResponseEntity.ok("cliente cadatro");
 
     }
+
+
+
 
     @PutMapping(path = "/pessoa")
     public ResponseEntity<String> atualizar(PessoaPUTDto pessoaPUTDto) {
