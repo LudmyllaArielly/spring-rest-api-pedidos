@@ -48,12 +48,29 @@ public class PessoaResurce {
         //salvei
         //retonei
         //exibindo a msg
-        return ResponseEntity.ok("cliente cadatro");
+        return ResponseEntity.ok("cliente cadastro");
 
     }
 
 
+    @GetMapping(path = "/pessoa")
+    public ResponseEntity<List<PessoaGetDto>> listarPessoa() {
 
+        List<Pessoa> pessoas = pessoaService.buscar();
+        List<PessoaGetDto> list = PessoaMapper.INSTANCE.ListPessoaToListPessoaGetDto(pessoas);
+
+//        List<PessoaGetDto> result = new ArrayList<>();
+//        for (int i = 0; i < pessoas.size(); i++) {
+//            PessoaGetDto pessoaGetDto = new PessoaGetDto();
+//            pessoaGetDto.setCpf(pessoas.get(i).getCpf());
+//            pessoaGetDto.setName(pessoas.get(i).getName());
+//            result.add(pessoaGetDto);
+//
+//        }
+
+        return ResponseEntity.ok(list);
+
+    }
 
     @PutMapping(path = "/pessoa")
     public ResponseEntity<String> atualizar(PessoaPUTDto pessoaPUTDto) {
