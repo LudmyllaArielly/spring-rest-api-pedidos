@@ -54,7 +54,6 @@ public class PessoaResurce {
 
 
 
-
     
 
     @GetMapping(path = "/pessoa")
