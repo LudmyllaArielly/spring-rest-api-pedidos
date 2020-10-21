@@ -41,6 +41,17 @@ public class PessoaResurce {
 
     }
 
+    @PostMapping(path = "/cadastroCliente")
+    public ResponseEntity<String> cadastrarCliente(@RequestBody PessoaDto pessoaDto) {
+        //validaçoes
+        //banco verificação
+        //salvei
+        //retonei
+        //exibindo a msg
+        return ResponseEntity.ok("cliente cadastro");
+
+    }
+
 
     @GetMapping(path = "/pessoa")
     public ResponseEntity<List<PessoaGetDto>> listarPessoa() {
