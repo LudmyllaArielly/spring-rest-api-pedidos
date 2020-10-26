@@ -16,9 +16,18 @@ public interface CategoriaService {
 	
 	List<Categoria> findByName(String nome);
 
+	Categoria findByNameCat(String nome);
+	
+	List<Categoria> findByNameAndId(String nome);
+	
+	
+
 	Categoria findById(Long id);
 	
-	Categoria findByNameCat(String nome);
+
+	
+	
+	
 
 	
 
