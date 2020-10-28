@@ -32,7 +32,8 @@ public class ProdutoServiceImpl implements ProdutoService {
 	@Transactional
 	@Override
 	public Long atualizar(ProdutoCategoriaLista produto) {
-		validacoesUpdate(produto);
+		validaIdExiste(produto.getId());
+		validacoes(produto);
 		ProdutoCategoriaLista produtoMapper = ProdutoMapper.INSTANCE.produtoToproduto(produto);
 		produtoMapper = produtoCaltegoriaListaRepository.save(produto);
 		return produtoMapper.getId();
@@ -65,13 +66,6 @@ public class ProdutoServiceImpl implements ProdutoService {
 		validaExisteProduto(produto);
 	}
 	
-	private void validacoesUpdate(ProdutoCategoriaLista produto) {
-		validaProdutoVazio(produto);
-		validaCategoria(produto);
-		validaExisteProdutoUpdate(produto);
-		validaIdExiste(produto.getId());
-	}
-
 	private void validaProdutoVazio(ProdutoCategoriaLista produto) {
 
 		boolean nomeIsBlank = produto.getNome().isBlank();
@@ -94,23 +88,6 @@ public class ProdutoServiceImpl implements ProdutoService {
 	}
 
 	private void validaExisteProduto(ProdutoCategoriaLista produto) {
-		List<ProdutoCategoriaLista> produtoNome = produtoCaltegoriaListaRepository.findByName(produto.getNome());
-
-		List<ProdutoCategoriaLista> produtoCodigo = produtoCaltegoriaListaRepository.findByCodigo(produto.getCodigo());
-
-		boolean nomeExiste = !produtoNome.isEmpty();
-		boolean codigoExiste = !produtoCodigo.isEmpty();
-
-		if (nomeExiste) {
-			throw new DataIntegrityViolationException("Nome já existe.");
-		}
-
-		if (codigoExiste) {
-			throw new DataIntegrityViolationException("Código já existe.");
-		}
-	}
-	
-	private void validaExisteProdutoUpdate(ProdutoCategoriaLista produto) {
 		
 		List<ProdutoCategoriaLista> produtoNomeEId = 
 				produtoCaltegoriaListaRepository
@@ -120,8 +97,8 @@ public class ProdutoServiceImpl implements ProdutoService {
 				produtoCaltegoriaListaRepository
 				.findByCodigoById(produto.getCodigo(), produto.getId());
 		
-		boolean nomeAndIdMudou= produtoNomeEId.isEmpty();
-		boolean codigoAndIdMudou = produtoCodigoId.isEmpty();
+		boolean nomeMudou= produtoNomeEId.isEmpty();
+		boolean codigoMudou = produtoCodigoId.isEmpty();
 		
 		List<ProdutoCategoriaLista> produtoNome = 
 				produtoCaltegoriaListaRepository.findByName(produto.getNome());
@@ -132,11 +109,11 @@ public class ProdutoServiceImpl implements ProdutoService {
 		boolean nomeExiste = !produtoNome.isEmpty();
 		boolean codigoExiste = !produtoCodigo.isEmpty();
 		
-		if(nomeAndIdMudou == nomeExiste) {
+		if(nomeMudou == nomeExiste) {
 			throw new DataIntegrityViolationException("Nome já existe.");
 		}
 		
-		if(codigoAndIdMudou == codigoExiste ) {
+		if(codigoMudou == codigoExiste ) {
 			throw new DataIntegrityViolationException("Código já existe.");
 		}
 		
