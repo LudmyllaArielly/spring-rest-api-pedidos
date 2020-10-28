@@ -2,7 +2,6 @@ package com.ludmylla.spring.loja.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.OffsetDateTime;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -45,14 +44,6 @@ public class ProdutoCategoriaLista implements Serializable {
 
 	@NotNull
 	private Integer quantidade;
-	@NotBlank
-	private String peso;
-	@NotBlank
-	private String unidade;
-
-	private OffsetDateTime dataCadastro;
-
-	private OffsetDateTime dataAtualizacao;
 
 	@ManyToMany
 	@JoinColumn(name = "CATEGORIA_ID")
@@ -99,38 +90,6 @@ public class ProdutoCategoriaLista implements Serializable {
 		this.quantidade = quantidade;
 	}
 
-	public String getPeso() {
-		return peso;
-	}
-
-	public void setPeso(String peso) {
-		this.peso = peso;
-	}
-
-	public String getUnidade() {
-		return unidade;
-	}
-
-	public void setUnidade(String unidade) {
-		this.unidade = unidade;
-	}
-
-	public OffsetDateTime getDataCadastro() {
-		return dataCadastro;
-	}
-
-	public void setDataCadastro(OffsetDateTime dataCadastro) {
-		this.dataCadastro = dataCadastro;
-	}
-
-	public OffsetDateTime getDataAtualizacao() {
-		return dataAtualizacao;
-	}
-
-	public void setDataAtualizacao(OffsetDateTime dataAtualizacao) {
-		this.dataAtualizacao = dataAtualizacao;
-	}
-
 	public List<Categoria> getCategoria() {
 		return categoria;
 	}
@@ -167,8 +126,7 @@ public class ProdutoCategoriaLista implements Serializable {
 	@Override
 	public String toString() {
 		return "ProdutoCategoriaLista [id=" + id + ", nome=" + nome + ", codigo=" + codigo + ", preco=" + preco
-				+ ", quantidade=" + quantidade + ", peso=" + peso + ", unidade=" + unidade + ", dataCadastro="
-				+ dataCadastro + ", dataAtualizacao=" + dataAtualizacao + ", categoria=" + categoria + "]";
+				+ ", quantidade=" + quantidade + ", categoria=" + categoria + "]";
 	}
 
 }

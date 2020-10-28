@@ -20,7 +20,6 @@ public interface ProdutoMapper {
 	
 	@Mapping(target = "categoria", source = "listCategoriaDto2")
 	@Mapping(target = "id", ignore = true)
-	@Mapping(target = "dataAtualizacao", ignore = true)
 	ProdutoCategoriaLista dtoToProduto (ProdutoDto2 source);
 	
 	@Mapping(target = "categoria", source = "listCategoriaDto2")
