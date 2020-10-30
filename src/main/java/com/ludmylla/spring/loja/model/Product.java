@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -21,8 +22,8 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "nome", name = "nome_uk"))
-public class ProdutoCategoriaLista implements Serializable {
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "name", name = "name_uk"))
+public class Product implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -30,21 +31,23 @@ public class ProdutoCategoriaLista implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank
-	private String nome;
+	@NotBlank(message = "O nome não pode ser vazio!")
+	private String name;
 
-	@NotBlank
+	@NotBlank(message = "O código não pode ser vazio!")
 	@Column(unique = true)
-	private String codigo;
+	private String code;
 
+	@Column(nullable = false)	
+	@DecimalMin(value = "0.01", message = "Preço tem que ser maior que 0")
+	@Digits(integer = 3, fraction = 2, message = "Preço: apenas centenas e 2 casas após o ponto.")
+	private BigDecimal price;
+	
+	@DecimalMin(value = "0.01", message = "Quantidade tem que ser maior que 0")
+	@NotNull(message = "A quantidade não pode ser nulo!")
+	private Integer quantity;
+	
 	@NotNull
-	@Column(nullable = false)
-	@Digits(integer = 3, fraction = 2, message = " Apenas centenas e 2 casas após o .")
-	private BigDecimal preco;
-
-	@NotNull
-	private Integer quantidade;
-
 	@ManyToMany
 	@JoinColumn(name = "CATEGORIA_ID")
 	@OnDelete(action = OnDeleteAction.CASCADE)
@@ -58,36 +61,36 @@ public class ProdutoCategoriaLista implements Serializable {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getName() {
+		return name;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getCodigo() {
-		return codigo;
+	public String getCode() {
+		return code;
 	}
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
-	public BigDecimal getPreco() {
-		return preco;
+	public BigDecimal getPrice() {
+		return price;
 	}
 
-	public void setPreco(BigDecimal preco) {
-		this.preco = preco;
+	public void setPrice(BigDecimal price) {
+		this.price = price;
 	}
 
-	public Integer getQuantidade() {
-		return quantidade;
+	public Integer getQuantity() {
+		return quantity;
 	}
 
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 
 	public List<Categoria> getCategoria() {
@@ -114,7 +117,7 @@ public class ProdutoCategoriaLista implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ProdutoCategoriaLista other = (ProdutoCategoriaLista) obj;
+		Product other = (Product) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -125,8 +128,8 @@ public class ProdutoCategoriaLista implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ProdutoCategoriaLista [id=" + id + ", nome=" + nome + ", codigo=" + codigo + ", preco=" + preco
-				+ ", quantidade=" + quantidade + ", categoria=" + categoria + "]";
+		return "ProdutoCategoriaLista [id=" + id + ", name=" + name + ", code=" + code + ", price=" + price
+				+ ", quantity=" + quantity + ", categoria=" + categoria + "]";
 	}
 
 }

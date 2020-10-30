@@ -9,25 +9,25 @@ import org.mapstruct.factory.Mappers;
 import com.ludmylla.spring.loja.dto.ProdutoDto2;
 import com.ludmylla.spring.loja.dto.ProdutoGetDto;
 import com.ludmylla.spring.loja.dto.ProdutoPutDto;
-import com.ludmylla.spring.loja.model.ProdutoCategoriaLista;
+import com.ludmylla.spring.loja.model.Product;
 
 @Mapper(uses = { CategoriaMapper.class})
 public interface ProdutoMapper {
 	
 	ProdutoMapper INSTANCE = Mappers.getMapper(ProdutoMapper.class);
 	
-	ProdutoCategoriaLista produtoToproduto (ProdutoCategoriaLista source);
+	Product productToproduct (Product source);
 	
 	@Mapping(target = "categoria", source = "listCategoriaDto2")
 	@Mapping(target = "id", ignore = true)
-	ProdutoCategoriaLista dtoToProduto (ProdutoDto2 source);
+	Product dtoToProduto (ProdutoDto2 source);
 	
 	@Mapping(target = "categoria", source = "listCategoriaDto2")
-	ProdutoCategoriaLista dtoPutToProduto(ProdutoPutDto source);
+	Product dtoPutToProduto(ProdutoPutDto source);
 	
 	@Mapping(target = "categoria", ignore = true)
 	@Mapping(target = "id", ignore = true)
-	ProdutoCategoriaLista dtoGetToProduto (ProdutoGetDto source);
+	Product dtoGetToProduto (ProdutoGetDto source);
 
-	List<ProdutoGetDto> dtoGetToProduto(List<ProdutoCategoriaLista> produtos);
+	List<ProdutoGetDto> dtoGetToProduto(List<Product> produtos);
 }

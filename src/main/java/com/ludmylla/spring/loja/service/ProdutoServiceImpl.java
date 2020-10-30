@@ -11,129 +11,137 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ludmylla.spring.loja.mapper.ProdutoMapper;
-import com.ludmylla.spring.loja.model.ProdutoCategoriaLista;
-import com.ludmylla.spring.loja.repository.ProdutoCaltegoriaListaRepository;
+import com.ludmylla.spring.loja.model.Categoria;
+import com.ludmylla.spring.loja.model.Product;
+import com.ludmylla.spring.loja.repository.CategoriaRepository;
+import com.ludmylla.spring.loja.repository.ProductRepository;
 
 
 @Service
 public class ProdutoServiceImpl implements ProdutoService {
 
 	@Autowired
-	private ProdutoCaltegoriaListaRepository produtoCaltegoriaListaRepository;
+	private ProductRepository productRepository;
+	
+	@Autowired
+	private CategoriaRepository categoriaRepository;
 
 	@Transactional
 	@Override
-	public Long salvar(ProdutoCategoriaLista produto) {
-		validacoes(produto);
-		ProdutoCategoriaLista produtoSalvo = produtoCaltegoriaListaRepository.save(produto);
-		return produtoSalvo.getId();
+	public Long save(Product product) {
+		validations(product);
+		findCategory(product);
+		Product productSave = productRepository.save(product);
+		return productSave.getId();
 	}
 
 	@Transactional
 	@Override
-	public Long atualizar(ProdutoCategoriaLista produto) {
-		validaIdExiste(produto.getId());
-		validacoes(produto);
-		ProdutoCategoriaLista produtoMapper = ProdutoMapper.INSTANCE.produtoToproduto(produto);
-		produtoMapper = produtoCaltegoriaListaRepository.save(produto);
-		return produtoMapper.getId();
+	public Long update(Product product) {
+		validIsProductIdExist(product.getId());
+		validations(product);
+		Product productMapper = ProdutoMapper.INSTANCE.productToproduct(product);
+		productMapper = productRepository.save(product);
+		return productMapper.getId();
 
 	}
 
 	@Override
 	@Transactional
-	public List<ProdutoCategoriaLista> listar() {
-		List<ProdutoCategoriaLista> produtos = new ArrayList<>();
-		Iterable<ProdutoCategoriaLista> list = produtoCaltegoriaListaRepository.findAll();
-		list.forEach(produtos::add);
-		return produtos;
+	public List<Product> list() {
+		List<Product> products = new ArrayList<>();
+		Iterable<Product> list = productRepository.findAll();
+		list.forEach(products::add);
+		return products;
 	}
 
 	@Override
 	@Transactional
-	public void deletar(Long id) {
-		validaIdExiste(id);
-		Optional<ProdutoCategoriaLista> produtos = produtoCaltegoriaListaRepository.findById(id);
-		ProdutoCategoriaLista produto = produtos.get();
+	public void delete(Long id) {
+		validIsProductIdExist(id);
+		Optional<Product> products = productRepository.findById(id);
+		Product product = products.get();
 
-		produtoCaltegoriaListaRepository.delete(produto);
+		productRepository.delete(product);
 
-	}
-
-	private void validacoes(ProdutoCategoriaLista produto) {
-		validaProdutoVazio(produto);
-		validaCategoria(produto);
-		validaExisteProduto(produto);
 	}
 	
-	private void validaProdutoVazio(ProdutoCategoriaLista produto) {
+	@Override
+	public void findCategory(Product product) {
+		List<Categoria> categoria = product.getCategoria();
+		List<Categoria> list = new ArrayList<>();
+		for (int i = 0; i < categoria.size(); i++) {
+			List<Categoria> categorias = categoriaRepository.findByName(categoria.get(i).getNome());
+			list.addAll(categorias);
+		}
+		isListEmpty(list);
+		product.setCategoria(list);
+	}
+	
+	private void isListEmpty(List<Categoria > list) {
+		if (list.isEmpty()) {
+			throw new IllegalArgumentException("Categoria deve ser informada!");
+		}
+	}
+	
 
-		boolean nomeIsBlank = produto.getNome().isBlank();
-		boolean codigoIsBlank = produto.getCodigo().isBlank();
-		boolean categoriaIsEmpty = produto.getCategoria().isEmpty();
+	private void validations(Product product) {
+		validIsProductEmpty(product);
+		validIsCategoryExist(product);
+		validIsProductExist(product);
+	}
+	
+	private void validIsProductEmpty(Product product) {
 
-		if (nomeIsBlank || codigoIsBlank || categoriaIsEmpty) {
+		boolean isNameBlank = product.getName().isBlank();
+		boolean isCodeBlank = product.getCode().isBlank();
+		boolean isCategoryBlank = product.getCategoria().isEmpty();
+
+		if (isNameBlank || isCodeBlank || isCategoryBlank ) {
 			throw new IllegalArgumentException("Existem um ou mais itens em branco.");
 		}
 
-		if (produto.getPreco() == null || produto.getQuantidade() == null) {
+		if (product.getPrice() == null || product.getQuantity() == null 
+				 || product.getCategoria() == null){
 			throw new IllegalArgumentException(" Existem um ou mais campos em branco.");
 		}
 	}
 
-	private void validaCategoria(ProdutoCategoriaLista produto) {
-		if (produto.getCategoria() instanceof NoSuchElementException) {
+	private void validIsCategoryExist(Product product) {
+		if (product.getCategoria() instanceof NoSuchElementException) {
 			throw new IllegalArgumentException("Categoria não existe, ou está em branco.");
 		}
+		
 	}
 
-	private void validaExisteProduto(ProdutoCategoriaLista produto) {
-		
-		List<ProdutoCategoriaLista> produtoNomeEId = 
-				produtoCaltegoriaListaRepository
-				.findByNameById(produto.getNome(), produto.getId());
-		
-		List<ProdutoCategoriaLista> produtoCodigoId =
-				produtoCaltegoriaListaRepository
-				.findByCodigoById(produto.getCodigo(), produto.getId());
-		
-		boolean nomeMudou= produtoNomeEId.isEmpty();
-		boolean codigoMudou = produtoCodigoId.isEmpty();
-		
-		List<ProdutoCategoriaLista> produtoNome = 
-				produtoCaltegoriaListaRepository.findByName(produto.getNome());
-		
-		List<ProdutoCategoriaLista> produtoCodigo = 
-				produtoCaltegoriaListaRepository.findByCodigo(produto.getCodigo());
+	private void validIsProductExist(Product product) {
 
-		boolean nomeExiste = !produtoNome.isEmpty();
-		boolean codigoExiste = !produtoCodigo.isEmpty();
-		
-		if(nomeMudou == nomeExiste) {
+		List<Product> productName = 
+				productRepository.findByName(product.getName());
+
+		List<Product> productCode =
+				productRepository.findByCode(product.getCode());
+
+		boolean nameExist = !productName.isEmpty();
+		boolean codeExist = !productCode.isEmpty();
+
+		if (nameExist) {
 			throw new DataIntegrityViolationException("Nome já existe.");
 		}
-		
-		if(codigoMudou == codigoExiste ) {
+
+		if (codeExist) {
 			throw new DataIntegrityViolationException("Código já existe.");
 		}
-		
-		/* Se no update eu mudar por exemplo: apenas o preço e deixar o mesmo
-		 * nome e codígo, então vai verificar que aquele nome e código que já existe e
-		 * pertence ao id, que está sendo atualizado.
-		 * Se o nome ou o código for alterado, então essa verificação
-		 * nomeAndIdMudou será true, então não vai cadastrar.
-		 * Para resolver quando o nome ou código for alterado
-		 * fará a verificação se o nome e codigo já existem
-		 * no banco, se existe lanca exceção, se não cadastra*/
-		
+
 	}
 
-	private void validaIdExiste(Long id) {
-		Optional<ProdutoCategoriaLista> produto = produtoCaltegoriaListaRepository.findById(id);
+	private void validIsProductIdExist(Long id) {
+		Optional<Product> product = 
+				productRepository.findById(id);
 
-		boolean idExiste = produto.isEmpty();
+		boolean isIdExist = product.isEmpty();
 
-		if (idExiste) {
+		if (isIdExist) {
 			throw new IllegalArgumentException("ID não existe.");
 		}
 	}

@@ -5,43 +5,43 @@ import java.util.List;
 
 public class ProdutoDto2 {
 
-	private String nome;
-	private String codigo;
-	private BigDecimal preco;
-	private Integer quantidade;
+	private String name;
+	private String code;
+	private BigDecimal price;
+	private Integer quantity;
 
 	private List<CategoriaDto2> listCategoriaDto2;
 
-	public String getNome() {
-		return nome;
+	public String getName() {
+		return name;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getCodigo() {
-		return codigo;
+	public String getCode() {
+		return code;
 	}
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
+	public void setCode(String code) {
+		this.code = code;
 	}
 
-	public BigDecimal getPreco() {
-		return preco;
+	public BigDecimal getPrice() {
+		return price;
 	}
 
-	public void setPreco(BigDecimal preco) {
-		this.preco = preco;
+	public void setPrice(BigDecimal price) {
+		this.price = price;
 	}
 
-	public Integer getQuantidade() {
-		return quantidade;
+	public Integer getQuantity() {
+		return quantity;
 	}
 
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 
 	public List<CategoriaDto2> getListCategoriaDto2() {
