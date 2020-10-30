@@ -53,7 +53,7 @@ public class CategoriaResource {
 
     @GetMapping(path = "/categoria/{nome}")
     public ResponseEntity<List<CategoriaDto2>> listaPorNome(String nome) {
-        List<Categoria> categorias = categoriaService.findByName(nome);
+        List<Categoria> categorias = categoriaService.findByLikeName(nome);
         List<CategoriaDto2> listCatDtos = new ArrayList<>();
         for (int i = 0; i < categorias.size(); i++) {
             CategoriaDto2 categoriaDto2 = new CategoriaDto2();

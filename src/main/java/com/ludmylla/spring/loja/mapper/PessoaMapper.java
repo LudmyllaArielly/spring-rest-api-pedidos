@@ -15,6 +15,7 @@ public interface PessoaMapper {
 
     @Mapping(target = "tamanho", source = "altura")
     @Mapping(target = "raca", source = "cor")
+    @Mapping(target = "id", ignore = true)
     Pessoa dtoToPessoa(PessoaDto source);
 
 

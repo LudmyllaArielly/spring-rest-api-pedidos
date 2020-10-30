@@ -2,22 +2,17 @@ package com.ludmylla.spring.loja.service;
 
 import java.util.List;
 
-import com.ludmylla.spring.loja.dto.CategoriaDto;
-import com.ludmylla.spring.loja.model.Categoria;
-import com.ludmylla.spring.loja.model.Produto;
-import com.ludmylla.spring.loja.model.ProdutoCategoriaLista;
+import com.ludmylla.spring.loja.model.Product;
 
 public interface ProdutoService {
-	
-	Long salvar (Produto produto);
 
-	Long salvar (ProdutoCategoriaLista produto);
+	Long save(Product product);
 
-	List<ProdutoCategoriaLista> listar();
-	
-	//void atualizar(Long id, String nome);
-	
-	void deletar(Long id);
+	Long update(Product product);
 
-	Long atualizar(ProdutoCategoriaLista produtoCategoriaLista);
+	void delete(Long id);
+
+	List<Product> list();
+
+	void findCategory(Product product);
 }

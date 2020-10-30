@@ -1,7 +1,5 @@
 package com.ludmylla.spring.loja.dto;
 
-import java.util.List;
-
 public class PessoaPUTDto {
 	private Long id;
 
