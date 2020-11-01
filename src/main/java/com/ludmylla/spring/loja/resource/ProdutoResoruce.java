@@ -7,6 +7,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -45,7 +46,10 @@ public class ProdutoResoruce {
 
 			return ResponseEntity.status(HttpStatus.CREATED).body(new Date() + " Produto adicionado, id: " + id);
 		
-		} catch (Exception e) {
+		} catch (DataIntegrityViolationException ex) {
+			throw new DataIntegrityViolationException("Código ou nome existente." + ex.getMessage());
+		}
+		catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 					.body(new Date() + " Falha ao adicionar: " + e.getMessage());
 		}
