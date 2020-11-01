@@ -1,7 +1,10 @@
 package com.ludmylla.spring.loja.resource;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import com.ludmylla.spring.loja.dto.CategoriaDto2;
 import com.ludmylla.spring.loja.dto.CategoriaPutDto;
@@ -24,20 +27,21 @@ public class CategoriaResource {
     @Autowired
     private CategoriaService categoriaService;
 
-    @PostMapping(path = "/categoria")
-    public ResponseEntity<String> cadastrar(@RequestBody CategoriaDto2 categoriaDto2) {
+	@PostMapping(path = "/categoria")
+	public ResponseEntity<String> cadastrar(@Valid @RequestBody CategoriaDto2 categoriaDto2) {
 
-        try {
-            Categoria categoria = new Categoria();
-            categoria.setNome(categoriaDto2.getNome());
+		try {
+			Categoria categoria = CategoriaMapper.INSTANCE.dtoToCategoria(categoriaDto2);
 
-            Long id = categoriaService.salvar(categoria);
-            return ResponseEntity.ok("Categoria adicionada id: " + id);
-        } catch (Exception ex) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body("Falha: " + ex.getMessage());
-        }
+			Long id = categoriaService.salvar(categoria);
+			return ResponseEntity.status(HttpStatus.CREATED).body(new Date() 
+					+ "Categoria adicionada, id: " + id);
+		} catch (Exception ex) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).
+					body("Falha: " + ex.getMessage());
+		}
 
-    }
+	}
 
     @GetMapping(path = "/categoria")
     public ResponseEntity<List<CategoriaDto2>> listarCategorias() {
