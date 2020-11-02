@@ -1,3 +1,5 @@
+
+  
 package com.ludmylla.spring.loja.model;
 
 import java.io.Serializable;
@@ -10,7 +12,7 @@ import javax.persistence.Id;
 
 
 @Entity
-public class Pessoa implements Serializable {
+public class Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -87,7 +89,7 @@ public class Pessoa implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Pessoa pessoa = (Pessoa) o;
+        Person pessoa = (Person) o;
         return Objects.equals(id, pessoa.id) &&
                 Objects.equals(name, pessoa.name) &&
                 Objects.equals(cpf, pessoa.cpf) &&

@@ -8,25 +8,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ludmylla.spring.loja.model.Categoria;
+import com.ludmylla.spring.loja.model.Category;
 import com.ludmylla.spring.loja.model.Product;
 import com.ludmylla.spring.loja.repository.ProductRepository;
 
 @Service
-public class ProdutoServiceImpl implements ProdutoService {
+public class ProductServiceImpl implements ProductService {
 
 	@Autowired
 	private ProductRepository productRepository;
 
 	@Autowired
-	private CategoriaService categoriaService;
+	private CategoryService categoryService;
 
 	@Transactional
 	@Override
 	public Long save(Product product) {
 		
-		List<Categoria> list = categoriaService.findCategoryProduct(product);
-		product.setCategoria(list);
+		List<Category> list = categoryService.findCategoryProduct(product);
+		product.setCategories(list);
 		validations(product);
 		Product productSave = productRepository.save(product);
 		
@@ -37,8 +37,8 @@ public class ProdutoServiceImpl implements ProdutoService {
 		validIsProductEmpty(product);
 		validIsCategoryExist(product);
 		validIsProductNull(product);
-		validIsListEmpty(product);
-		validProductEqualZero(product);
+		validIsProductListCategoryEmpty(product);
+		validIsProductEqualZero(product);
 	}
 
 	private void validIsProductEmpty(Product product) {
@@ -47,13 +47,13 @@ public class ProdutoServiceImpl implements ProdutoService {
 		boolean isCodeBlank = product.getCode().isBlank();
 
 		if (isNameBlank || isCodeBlank) {
-			throw new IllegalArgumentException("Existem um ou mais itens em branco.");
+			throw new IllegalArgumentException("There are one or more blank items.");
 		}
 	}
 
 	private void validIsCategoryExist(Product product) {
-		if (product.getCategoria() instanceof NoSuchElementException) {
-			throw new IllegalArgumentException("Categoria não existe, ou está em branco.");
+		if (product.getCategories() instanceof NoSuchElementException) {
+			throw new IllegalArgumentException("Category does not exist, or is blank.");
 		}
 	}
 
@@ -61,24 +61,24 @@ public class ProdutoServiceImpl implements ProdutoService {
 
 		boolean isPriceNull = product.getPrice() == null;
 		boolean isQuantityNull = product.getQuantity() == null;
-		boolean isCategoryNull = product.getCategoria() == null;
+		boolean isCategoryNull = product.getCategories() == null;
 
 		if (isPriceNull || isQuantityNull || isCategoryNull) {
-			throw new IllegalArgumentException(" Existem um ou mais campos em branco.");
+			throw new IllegalArgumentException("There are one or more blank items.");
 		}
 	}
 
-	private void validIsListEmpty(Product product) {
-		boolean isListCategoriaEmpty = product.getCategoria().isEmpty();
-		if (isListCategoriaEmpty) {
-			throw new IllegalArgumentException("Categoria deve ser informada!");
+	private void validIsProductListCategoryEmpty(Product product) {
+		boolean isListCategoryEmpty = product.getCategories().isEmpty();
+		if (isListCategoryEmpty) {
+			throw new IllegalArgumentException("Category must be informed!");
 		}
 	}
 
-	private void validProductEqualZero(Product product) {
-		boolean priceEqualZero = product.getPrice().compareTo(BigDecimal.ZERO) <= 0;
-		if (priceEqualZero) {
-			throw new IllegalArgumentException("Preço: não pode ser zero.");
+	private void validIsProductEqualZero(Product product) {
+		boolean isPriceEqualZero = product.getPrice().compareTo(BigDecimal.ZERO) <= 0;
+		if (isPriceEqualZero) {
+			throw new IllegalArgumentException("Price: cannot be zero.");
 		}
 	}
 

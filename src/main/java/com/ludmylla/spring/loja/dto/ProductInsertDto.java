@@ -3,14 +3,14 @@ package com.ludmylla.spring.loja.dto;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class ProdutoDto2 {
+public class ProductInsertDto {
 
 	private String name;
 	private String code;
 	private BigDecimal price;
 	private Integer quantity;
 
-	private List<CategoriaDto2> listCategoriaDto2;
+	private List<CategoryInsertDto> listCategoryInsertDto;
 
 	public String getName() {
 		return name;
@@ -44,12 +44,12 @@ public class ProdutoDto2 {
 		this.quantity = quantity;
 	}
 
-	public List<CategoriaDto2> getListCategoriaDto2() {
-		return listCategoriaDto2;
+	public List<CategoryInsertDto> getListCategoryInsertDto() {
+		return listCategoryInsertDto;
 	}
 
-	public void setListCategoriaDto2(List<CategoriaDto2> listCategoriaDto2) {
-		this.listCategoriaDto2 = listCategoriaDto2;
+	public void setListCategoryInsertDto(List<CategoryInsertDto> listCategoryInsertDto) {
+		this.listCategoryInsertDto = listCategoryInsertDto;
 	}
 
 }

@@ -1,6 +1,6 @@
 package com.ludmylla.spring.loja.dto;
 
-public class PessoaGetDto {
+public class PersonListDto {
     private String name;
     private String cpf;
     private String cor;

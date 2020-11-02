@@ -1,6 +1,6 @@
 package com.ludmylla.spring.loja.dto;
 
-public class PessoaPUTDto {
+public class PersonUpdateDto {
 	private Long id;
 
 	private String name;

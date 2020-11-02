@@ -1,6 +1,6 @@
 package com.ludmylla.spring.loja.dto;
 
-public class PessoaDto {
+public class PersonInsertDto {
     private String name;
     private String cpf;
     private String senha;

@@ -12,33 +12,34 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ludmylla.spring.loja.dto.ProdutoDto2;
-import com.ludmylla.spring.loja.mapper.ProdutoMapper;
+import com.ludmylla.spring.loja.dto.ProductInsertDto;
+import com.ludmylla.spring.loja.mapper.ProductMapper;
 import com.ludmylla.spring.loja.model.Product;
-import com.ludmylla.spring.loja.service.ProdutoService;
+import com.ludmylla.spring.loja.service.ProductService;
 
 @RestController
-public class ProdutoResoruce {
+public class ProductResource {
 
 	@Autowired
-	private ProdutoService produtoService;
+	private ProductService produtoService;
 
-	@PostMapping(path = "/produtos")
-	public ResponseEntity<String> salvar(@Valid @RequestBody ProdutoDto2 produtoDto2) {
+	@PostMapping(path = "/products")
+	public ResponseEntity<String> save(@Valid @RequestBody ProductInsertDto productInsertDto) {
 		try {
-			Product product = ProdutoMapper.INSTANCE.dtoToProduto(produtoDto2);
-
+			Product product = ProductMapper.INSTANCE
+					.dtoInsertProduct(productInsertDto);
+					
 			Long id = produtoService.save(product);
 
 			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(new Date() + " Produto adicionado, id: " + id);
+					.body(new Date() + " Product added, id: " + id);
 
 		} catch (DataIntegrityViolationException ex) {
-			throw new DataIntegrityViolationException("Código ou nome existente." + ex.getMessage());
+			throw new DataIntegrityViolationException("Existing code or name." + ex.getMessage());
 		
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new Date() + " Falha ao adicionar: " + e.getMessage());
+					.body(new Date() + " Failed to add: " + e.getMessage());
 		}
 	}
 

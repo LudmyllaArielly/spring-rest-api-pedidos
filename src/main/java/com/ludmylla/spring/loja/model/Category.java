@@ -9,21 +9,19 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = "nome", name = "nome_uk"))
-public class Categoria implements Serializable {
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "name", name = "name_uk"))
+public class Category implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-	@NotNull(message = "Nome não pode ser nullo")
-	@NotBlank(message = "Nome não pode estar em branco.")
-	private String nome;
+
+	@NotBlank(message = "Name cannot be blank.")
+	private String name;
 
 	public Long getId() {
 		return id;
@@ -33,12 +31,12 @@ public class Categoria implements Serializable {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getName() {
+		return name;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override
@@ -57,7 +55,7 @@ public class Categoria implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		Category other = (Category) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -68,7 +66,7 @@ public class Categoria implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Categoria [id=" + id + ", nome=" + nome + "]";
+		return "Category [id=" + id + ", name=" + name + "]";
 	}
 
 }

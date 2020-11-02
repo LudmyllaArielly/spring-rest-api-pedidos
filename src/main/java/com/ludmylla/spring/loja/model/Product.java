@@ -31,27 +31,27 @@ public class Product implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank(message = "O nome não pode ser vazio!")
+	@NotBlank(message = "The name cannot be empty!")
 	private String name;
 
-	@NotBlank(message = "O código não pode ser vazio!")
+	@NotBlank(message = "The code cannot be empty!")
 	@Column(unique = true)
 	private String code;
 
-	@Column(nullable = false)	
-	@DecimalMin(value = "0.01", message = "Preço tem que ser maior que 0")
-	@Digits(integer = 3, fraction = 2, message = "Preço: apenas centenas e 2 casas após o ponto.")
+	@Column(nullable = false)
+	@DecimalMin(value = "0.01", message = "Price must be greater than 0")
+	@Digits(integer = 3, fraction = 2, message = "Price: only hundreds and 2 houses after the point.")
 	private BigDecimal price;
-	
-	@DecimalMin(value = "0.01", message = "Quantidade tem que ser maior que 0")
-	@NotNull(message = "A quantidade não pode ser nulo!")
+
+	@DecimalMin(value = "0.01", message = "Quantity must be greater than 0")
+	@NotNull(message = "The quantity cannot be zero!")
 	private Integer quantity;
-	
+
 	@NotNull
 	@ManyToMany
-	@JoinColumn(name = "CATEGORIA_ID")
+	@JoinColumn(name = "CATEGORY_ID")
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private List<Categoria> categoria;
+	private List<Category> categories;
 
 	public Long getId() {
 		return id;
@@ -93,12 +93,12 @@ public class Product implements Serializable {
 		this.quantity = quantity;
 	}
 
-	public List<Categoria> getCategoria() {
-		return categoria;
+	public List<Category> getCategories() {
+		return categories;
 	}
 
-	public void setCategoria(List<Categoria> categoria) {
-		this.categoria = categoria;
+	public void setCategories(List<Category> categories) {
+		this.categories = categories;
 	}
 
 	@Override
@@ -128,8 +128,8 @@ public class Product implements Serializable {
 
 	@Override
 	public String toString() {
-		return "ProdutoCategoriaLista [id=" + id + ", name=" + name + ", code=" + code + ", price=" + price
-				+ ", quantity=" + quantity + ", categoria=" + categoria + "]";
+		return "Product [id=" + id + ", name=" + name + ", code=" + code + ", price=" + price + ", quantity=" + quantity
+				+ ", categories=" + categories + "]";
 	}
 
 }
