@@ -35,7 +35,9 @@ public class ProductResource {
 					.body(new Date() + " Product added, id: " + id);
 
 		} catch (DataIntegrityViolationException ex) {
-			throw new DataIntegrityViolationException("Existing code or name." + ex.getMessage());
+			return ResponseEntity.status(HttpStatus.CONFLICT).
+					body(new Date() + " Existing code or name. " + ex.getMessage());
+		
 		
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)

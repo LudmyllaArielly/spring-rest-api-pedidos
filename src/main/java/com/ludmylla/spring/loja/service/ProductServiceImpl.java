@@ -25,7 +25,7 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Long save(Product product) {
 		
-		List<Category> list = categoryService.findCategoryProduct(product);
+		List<Category> list = categoryService.findCategoryProduct(product.getCategories());
 		product.setCategories(list);
 		validations(product);
 		Product productSave = productRepository.save(product);
@@ -33,15 +33,15 @@ public class ProductServiceImpl implements ProductService {
 		return productSave.getId();
 	}
 
-	private void validations(Product product) {
-		validIsProductEmpty(product);
+	private void validations(Product product) {		
+		validIfAttributesInProductAndEmpty(product);
 		validIsCategoryExist(product);
-		validIsProductNull(product);
-		validIsProductListCategoryEmpty(product);
-		validIsProductEqualZero(product);
+		validIfAttributesInProductAndNull(product);
+		validIfTheCategoryListOfProductIsEmpty(product);
+		validIfPriceOfProductIsEqualZero(product);
 	}
 
-	private void validIsProductEmpty(Product product) {
+	private void validIfAttributesInProductAndEmpty(Product product) {
 
 		boolean isNameBlank = product.getName().isBlank();
 		boolean isCodeBlank = product.getCode().isBlank();
@@ -57,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
 		}
 	}
 
-	private void validIsProductNull(Product product) {
+	private void validIfAttributesInProductAndNull(Product product) {
 
 		boolean isPriceNull = product.getPrice() == null;
 		boolean isQuantityNull = product.getQuantity() == null;
@@ -68,18 +68,18 @@ public class ProductServiceImpl implements ProductService {
 		}
 	}
 
-	private void validIsProductListCategoryEmpty(Product product) {
+	private void validIfTheCategoryListOfProductIsEmpty(Product product) {
 		boolean isListCategoryEmpty = product.getCategories().isEmpty();
 		if (isListCategoryEmpty) {
 			throw new IllegalArgumentException("Category must be informed!");
 		}
 	}
 
-	private void validIsProductEqualZero(Product product) {
+	private void validIfPriceOfProductIsEqualZero(Product product) {
 		boolean isPriceEqualZero = product.getPrice().compareTo(BigDecimal.ZERO) <= 0;
 		if (isPriceEqualZero) {
 			throw new IllegalArgumentException("Price: cannot be zero.");
-		}
+		}			
 	}
 
 }
