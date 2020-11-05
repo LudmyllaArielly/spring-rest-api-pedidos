@@ -26,20 +26,18 @@ public class ProductResource {
 	@PostMapping(path = "/products")
 	public ResponseEntity<String> save(@Valid @RequestBody ProductInsertDto productInsertDto) {
 		try {
-			Product product = ProductMapper.INSTANCE
-					.dtoInsertProduct(productInsertDto);
-					
+			Product product = ProductMapper.INSTANCE.dtoInsertProduct(productInsertDto);
+
 			Long id = produtoService.save(product);
 
-			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(new Date() + " Product added, id: " + id);
+			return ResponseEntity.status(HttpStatus.CREATED).body(new Date() + " Product added, id: " + id);
 
 		} catch (DataIntegrityViolationException ex) {
-			throw new DataIntegrityViolationException("Existing code or name." + ex.getMessage());
-		
+			return ResponseEntity.status(HttpStatus.CONFLICT)
+					.body(new Date() + "Nome ou código existente" + ex.getMessage());
+			
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new Date() + " Failed to add: " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Date() + " Failed to add: " + e.getMessage());
 		}
 	}
 

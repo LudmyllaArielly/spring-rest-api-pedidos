@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ludmylla.spring.loja.model.Category;
-import com.ludmylla.spring.loja.model.Product;
 import com.ludmylla.spring.loja.repository.CategoryRepository;
 
 @Service
@@ -26,8 +25,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public List<Category> findCategoryProduct(Product product) {
-		List<Category> category = product.getCategories();
+	public List<Category> findCategoryProduct(List<Category> category) {
 		List<Category> list = new ArrayList<>();
 		
 		for (int i = 0; i < category.size(); i++) {
@@ -39,7 +37,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 	private void validations(Category category) {
 		validIsCategoryEmpty(category);
-		validIsCategoryNull(category);
+	
 	}
 
 	private void validIsCategoryEmpty(Category category) {
@@ -50,12 +48,6 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 	}
 
-	private void validIsCategoryNull(Category category) {
-		boolean isNomeNull = category.getName() == null;
-
-		if (isNomeNull) {
-			throw new IllegalArgumentException("Name cannot be null");
-		}
-	}
+	
 
 }
