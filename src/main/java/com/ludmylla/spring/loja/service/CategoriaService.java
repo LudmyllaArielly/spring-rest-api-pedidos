@@ -19,7 +19,7 @@ public interface CategoriaService {
 
 	List<Categoria> findByLikeName(String nome);
 	
-	List<Categoria> findCategoryProduct(Product product);
+	List<Categoria> findCategoryProduct(List<Categoria> categoria);
 
 
 }

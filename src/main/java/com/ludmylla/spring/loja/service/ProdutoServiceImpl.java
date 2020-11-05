@@ -28,7 +28,7 @@ public class ProdutoServiceImpl implements ProdutoService {
 	@Override
 	public Long save(Product product) {
 
-		List<Categoria> list = categoriaService.findCategoryProduct(product);
+		List<Categoria> list = categoriaService.findCategoryProduct(product.getCategoria());
 		product.setCategoria(list);
 		validations(product);
 
@@ -68,54 +68,53 @@ public class ProdutoServiceImpl implements ProdutoService {
 	}
 
 	private void validations(Product product) {
-		validIsProductEmpty(product);
-		validIsCategoryExist(product);
-		validIsProductNull(product);
-		validIsListEmpty(product);
-		validProductEqualZero(product);
+		validIfProductAttributesIsEmpty(product);
+		validIfCategoryExist(product);
+		validIfProductAttributesAndNull(product);
+		validIfProductCategoryListIsEmpty(product);
+		validIfProductPriceIsEqualToZero(product);
 
 	}
 
-	private void validIsProductEmpty(Product product) {
+	private void validIfProductAttributesIsEmpty(Product product) {
 
 		boolean isNameBlank = product.getName().isBlank();
 		boolean isCodeBlank = product.getCode().isBlank();
-	
 
-		if (isNameBlank || isCodeBlank ) {
+		if (isNameBlank || isCodeBlank) {
 			throw new IllegalArgumentException("Existem um ou mais itens em branco.");
 		}
 
 	}
 
-	private void validIsCategoryExist(Product product) {
+	private void validIfCategoryExist(Product product) {
 		if (product.getCategoria() instanceof NoSuchElementException) {
 			throw new IllegalArgumentException("Categoria não existe, ou está em branco.");
 		}
 
 	}
 
-	private void validIsProductNull(Product product) {
-		
+	private void validIfProductAttributesAndNull(Product product) {
+
 		boolean isPriceNull = product.getPrice() == null;
 		boolean isQuantityNull = product.getQuantity() == null;
 		boolean isCategoryNull = product.getCategoria() == null;
 
 		if (isPriceNull || isQuantityNull || isCategoryNull) {
-			throw new IllegalArgumentException(" Existem um ou mais campos em branco.");
+			throw new IllegalArgumentException(" Existem um ou mais campos nulos.");
 		}
 	}
 
-	private void validIsListEmpty(Product product) {
+	private void validIfProductCategoryListIsEmpty(Product product) {
 		boolean isListCategoriaEmpty = product.getCategoria().isEmpty();
 		if (isListCategoriaEmpty) {
 			throw new IllegalArgumentException("Categoria deve ser informada!");
 		}
 	}
 
-	private void validProductEqualZero(Product product) {
-		boolean priceEqualZero =
-				product.getPrice().compareTo(BigDecimal.ZERO) <= 0;
+	private void validIfProductPriceIsEqualToZero(Product product) {
+
+		boolean priceEqualZero = product.getPrice().compareTo(BigDecimal.ZERO) <= 0;
 		if (priceEqualZero) {
 			throw new IllegalArgumentException("Preço: não pode ser zero.");
 		}

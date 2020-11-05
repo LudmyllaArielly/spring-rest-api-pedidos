@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ludmylla.spring.loja.mapper.CategoriaMapper;
 import com.ludmylla.spring.loja.model.Categoria;
-import com.ludmylla.spring.loja.model.Product;
 import com.ludmylla.spring.loja.repository.CategoriaRepository;
 
 @Service
@@ -69,8 +68,8 @@ public class CategoriaServiceImpl implements CategoriaService {
 	}
 	
 	@Override
-	public List<Categoria> findCategoryProduct(Product product) {
-		List<Categoria> categoria = product.getCategoria();
+	public List<Categoria> findCategoryProduct(List<Categoria> categoria) {
+		
 		List<Categoria> list = new ArrayList<>();
 		for (int i = 0; i < categoria.size(); i++) {
 			List<Categoria> categorias = categoriaRepository.findByName(categoria.get(i).getNome());
@@ -78,7 +77,7 @@ public class CategoriaServiceImpl implements CategoriaService {
 		}
 		return list;
 	
-		//product.setCategoria(list);
+		
 	}
 	
 	@Override
