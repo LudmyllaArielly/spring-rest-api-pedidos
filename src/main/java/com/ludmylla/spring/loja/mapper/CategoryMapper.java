@@ -13,6 +13,6 @@ public interface CategoryMapper {
 	CategoryMapper INSTANCE = Mappers.getMapper(CategoryMapper.class);
 
 	@Mapping(target = "id", ignore = true)
-	Category dtoInsertCategory(CategoryInsertDto source);
+	Category toCategoryInsertDto(CategoryInsertDto source);
 
 }

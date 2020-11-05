@@ -53,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
 
 	private void validIfCategoryExist(Product product) {
 		if (product.getCategories() instanceof NoSuchElementException) {
-			throw new IllegalArgumentException("Categoria não existe, ou está em branco.");
+			throw new IllegalArgumentException("Category does not exist, or is blank.");
 		}
 	}
 
@@ -78,7 +78,7 @@ public class ProductServiceImpl implements ProductService {
 	private void validIfProductPriceIsEqualToZero(Product product) {
 		boolean priceEqualZero = product.getPrice().compareTo(BigDecimal.ZERO) <= 0;
 		if (priceEqualZero) {
-			throw new IllegalArgumentException("Preço: não pode ser zero.");
+			throw new IllegalArgumentException("Price: cannot be zero!");
 		}
 	}
 

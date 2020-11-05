@@ -26,8 +26,8 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Override
 	public List<Category> findCategoryProduct(List<Category> category) {
-		List<Category> list = new ArrayList<>();
 		
+		List<Category> list = new ArrayList<>();		
 		for (int i = 0; i < category.size(); i++) {
 			List<Category> categories = categoryRepository.findByName(category.get(i).getName());
 			list.addAll(categories);
@@ -36,18 +36,14 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	private void validations(Category category) {
-		validIsCategoryEmpty(category);
-	
+		validCategoryNameIsEmpty(category);
 	}
 
-	private void validIsCategoryEmpty(Category category) {
-		boolean isNomeBlank = category.getName().isBlank();
-
-		if (isNomeBlank) {
+	private void validCategoryNameIsEmpty(Category category) {		
+		boolean isNameBlank = category.getName().isBlank();
+		if (isNameBlank) {
 			throw new IllegalArgumentException("Name cannot be blank.");
 		}
 	}
-
-	
 
 }

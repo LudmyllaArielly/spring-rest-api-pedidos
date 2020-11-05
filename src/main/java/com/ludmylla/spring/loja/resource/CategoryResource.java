@@ -27,7 +27,7 @@ public class CategoryResource {
 
 		try {
 			Category category = CategoryMapper.INSTANCE
-					.dtoInsertCategory(categoryInsertDto);
+					.toCategoryInsertDto(categoryInsertDto);
 
 			Long id = categoryService.save(category);
 			

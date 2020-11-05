@@ -17,18 +17,18 @@ public interface PersonMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "raca", source = "cor")
     @Mapping(target = "tamanho", source = "altura")
-    Person dtoInsetPerson(PersonInsertDto source);
+    Person toPersonInsertDto(PersonInsertDto source);
     
 
     @Mapping(target = "raca", source = "cor")
     @Mapping(target = "tamanho", source = "altura")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "senha", ignore = true)
-    Person dtoListPerson(PersonListDto source);
+    Person toPersonListDto(PersonListDto source);
     
 
     @Mapping(target = "raca", source = "cor")
     @Mapping(target = "tamanho", source = "altura")
-    List<Person> dtoListPersonList(List<PersonListDto> source);
+    List<Person> toListPersonListDto(List<PersonListDto> source);
 
 }
