@@ -16,11 +16,12 @@ public interface PersonMapper {
 	PersonMapper INSTANCE = Mappers.getMapper(PersonMapper.class);
 
 	@Mapping(target = "id", ignore = true)
-	Person dtoInsetPerson(PersonInsertDto source);
+	Person toPersonInsertDto(PersonInsertDto source);
+
 
 	@Mapping(target = "id", ignore = true)
-	Person dtoListPerson(PersonListDto source);
+	Person toPersonListDto(PersonListDto source);
 
-	List<Person> dtoListPersonList(List<PersonListDto> source);
+	List<Person> toListPersonListDto(List<PersonListDto> source);
 
 }

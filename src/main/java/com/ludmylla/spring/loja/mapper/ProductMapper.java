@@ -12,11 +12,11 @@ public interface ProductMapper {
 	
 	ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 	
-	Product productToproduct (Product source);
+	Product ToProduct (Product source);
 	
 	@Mapping(target = "categories", source = "listCategoryInsertDto")
 	@Mapping(target = "id", ignore = true)
-	Product dtoInsertProduct (ProductInsertDto source);
+	Product toProductInsertDto (ProductInsertDto source);
 	
 	
 }

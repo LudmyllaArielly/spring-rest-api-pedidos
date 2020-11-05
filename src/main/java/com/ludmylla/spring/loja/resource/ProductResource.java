@@ -21,25 +21,23 @@ import com.ludmylla.spring.loja.service.ProductService;
 public class ProductResource {
 
 	@Autowired
-	private ProductService produtoService;
+	private ProductService productService;
 
 	@PostMapping(path = "/products")
 	public ResponseEntity<String> save(@Valid @RequestBody ProductInsertDto productInsertDto) {
 		try {
-			Product product = ProductMapper.INSTANCE
-					.dtoInsertProduct(productInsertDto);
-					
-			Long id = produtoService.save(product);
+			Product product = ProductMapper.INSTANCE.toProductInsertDto(productInsertDto);
 
-			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(new Date() + " Product added, id: " + id);
+			Long id = productService.save(product);
+
+			return ResponseEntity.status(HttpStatus.CREATED).body(new Date() + " Product added, id: " + id);
 
 		} catch (DataIntegrityViolationException ex) {
-			throw new DataIntegrityViolationException("Existing code or name." + ex.getMessage());
-		
+			return ResponseEntity.status(HttpStatus.CONFLICT)
+					.body(new Date() + "Existing name or code." + ex.getMessage());
+			
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body(new Date() + " Failed to add: " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new Date() + " Failed to add: " + e.getMessage());
 		}
 	}
 

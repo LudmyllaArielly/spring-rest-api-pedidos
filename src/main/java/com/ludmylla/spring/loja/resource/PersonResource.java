@@ -24,7 +24,7 @@ public class PersonResource {
 	public ResponseEntity<Long> save(@RequestBody PersonInsertDto personInsertDto) {
 
 		Person person = PersonMapper.INSTANCE
-				.dtoInsetPerson(personInsertDto);
+				.toPersonInsertDto(personInsertDto);
 
 
 		Long id = personService.save(person);
