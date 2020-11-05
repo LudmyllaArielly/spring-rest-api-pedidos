@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,19 +27,19 @@ public class CategoryResource {
 	public ResponseEntity<String> save(@Valid @RequestBody CategoryInsertDto categoryInsertDto) {
 
 		try {
-			Category category = CategoryMapper.INSTANCE
-					.toCategoryInsertDto(categoryInsertDto);
+			Category category = CategoryMapper.INSTANCE.toCategoryInsertDto(categoryInsertDto);
 
 			Long id = categoryService.save(category);
-			
-			return ResponseEntity.status(HttpStatus.CREATED)
-					.body(new Date() + "Category added, id: " + id);
-			
-		} catch (Exception ex) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-					.body("Failed to add: " + ex.getMessage());
-		}
 
+			return ResponseEntity.status(HttpStatus.CREATED).body(new Date() + " Category added, id: " + id);
+		
+		} catch (DataIntegrityViolationException ex) {
+			return ResponseEntity.status(HttpStatus.CONFLICT)
+					.body(new Date() + " That name already exists in category! " + ex.getMessage());
+		}
+		catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(" Failed to add: " + e.getMessage());
+		}
 	}
 
 }

@@ -64,7 +64,7 @@ public class ProductServiceImpl implements ProductService {
 		boolean isCategoryNull = product.getCategories() == null;
 
 		if (isPriceNull || isQuantityNull || isCategoryNull) {
-			throw new IllegalArgumentException("There are one or more blank items.");
+			throw new IllegalArgumentException("There are one or more null items.");
 		}
 	}
 
