@@ -88,12 +88,12 @@ public class CategoriaServiceImpl implements CategoriaService {
 	}
 	
 	private void validations(Categoria categoria) {
-		validIsCategoryEmpty(categoria);
-		validIsCategoryNull(categoria);
+		validIfCategoryAttributeIsEmpty(categoria);
+		
 	}
 
 
-	private void validIsCategoryEmpty(Categoria categoria) {
+	private void validIfCategoryAttributeIsEmpty(Categoria categoria) {	
 		boolean isNomeBlank = categoria.getNome().isBlank();
 		
 		if(isNomeBlank) {
@@ -101,13 +101,7 @@ public class CategoriaServiceImpl implements CategoriaService {
 		}
 	}
 	
-	private void validIsCategoryNull(Categoria categoria) {
-		boolean isNomeNull = categoria.getNome() == null;
-		
-		if(isNomeNull) {
-			throw new IllegalArgumentException("Nome não pode ser nulo.");
-		}
-	}
+	
 	
 
 	
