@@ -33,10 +33,11 @@ public class ProdutoResoruce {
 			return ResponseEntity.status(HttpStatus.CREATED)
 					.body(new Date() + " Produto adicionado, id: " + id);
 
-		} catch (DataIntegrityViolationException ex) {
-			throw new DataIntegrityViolationException("Código ou nome existente." + ex.getMessage());
-		
-		} catch (Exception e) {
+		}  catch (DataIntegrityViolationException ex) {
+			return ResponseEntity.status(HttpStatus.CONFLICT)
+					.body(new Date() + "Nome ou código existente" + ex.getMessage());		
+		}
+		catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 					.body(new Date() + " Falha ao adicionar: " + e.getMessage());
 		}

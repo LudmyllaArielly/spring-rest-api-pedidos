@@ -14,5 +14,10 @@ import com.ludmylla.spring.loja.model.Categoria;
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
 	@Query("select u from Categoria u where lower(u.nome) = lower(?1)")
 	List<Categoria> findByName(String nome);
+	
+	@Query("select u from Categoria u where lower(u.nome) = lower(?1)")
+	List<Categoria> findByLikeName(String nome);
+
+	
 
 }
