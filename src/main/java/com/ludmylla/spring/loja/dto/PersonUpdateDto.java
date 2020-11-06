@@ -4,8 +4,7 @@ public class PersonUpdateDto {
 	private Long id;
 
 	private String name;
-	
-	
+	private String cpf;
 
 	public Long getId() {
 		return id;
@@ -23,6 +22,12 @@ public class PersonUpdateDto {
 		this.name = name;
 	}
 
-	
+	public String getCpf() {
+		return cpf;
+	}
+
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
+	}
 
 }
