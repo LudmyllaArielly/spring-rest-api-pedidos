@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +21,7 @@ public class CategoriaServiceImpl implements CategoriaService {
 	@Override
 	@Transactional
 	public Long salvar(Categoria categoria) {
-		valida(categoria.getNome());
+		validations(categoria);
 		Categoria categoriaSalva = categoriaRepository.save(categoria);
 		return categoriaSalva.getId();
 	}
@@ -30,7 +29,7 @@ public class CategoriaServiceImpl implements CategoriaService {
 	@Override
 	@Transactional
 	public void atualizar(Long id, Categoria categoria) {
-		valida(categoria.getNome());
+		
 		Categoria categoriaMapper = CategoriaMapper.INSTANCE.categoriaToCategoria(categoria);
 		
 		Optional<Categoria> categorias = categoriaRepository.findById(id);
@@ -87,22 +86,23 @@ public class CategoriaServiceImpl implements CategoriaService {
 		List<Categoria> list = categoriaRepository.findByLikeName(nome);
 		return list;
 	}
-
-
-	private void valida(String nome) {
-		if (nome.isEmpty()) {
-			throw new IllegalArgumentException("O nome não pode ser vazio");
-		}
-
-		// verifcar se a categoria existe
-		List<Categoria> categorias = categoriaRepository.findByName(nome);
-
-		boolean isCategoriaExiste = !categorias.isEmpty();
-		if (isCategoriaExiste) {
-			throw new DataIntegrityViolationException("Nome existente", null);
-		}
-
+	
+	private void validations(Categoria categoria) {
+		validIfCategoryAttributeIsEmpty(categoria);
+		
 	}
+
+
+	private void validIfCategoryAttributeIsEmpty(Categoria categoria) {	
+		boolean isNomeBlank = categoria.getNome().isBlank();
+		
+		if(isNomeBlank) {
+			throw new IllegalArgumentException("Nome não pode estar em branco.");
+		}
+	}
+	
+	
+	
 
 	
 }
