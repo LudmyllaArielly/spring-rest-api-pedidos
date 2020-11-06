@@ -9,6 +9,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ludmylla.spring.loja.mapper.CategoriaMapper;
 import com.ludmylla.spring.loja.model.Categoria;
 import com.ludmylla.spring.loja.repository.CategoriaRepository;
 
@@ -28,12 +29,15 @@ public class CategoriaServiceImpl implements CategoriaService {
 
 	@Override
 	@Transactional
-	public void atualizar(Long id, String nome) {
-		valida(nome);
+	public void atualizar(Long id, Categoria categoria) {
+		valida(categoria.getNome());
+		Categoria categoriaMapper = CategoriaMapper.INSTANCE.categoriaToCategoria(categoria);
+		
 		Optional<Categoria> categorias = categoriaRepository.findById(id);
-		Categoria categoria = categorias.get();
-		categoria.setNome(nome);
-		categoriaRepository.save(categoria);
+		 categoria = categorias.get();
+		 
+		
+		categoriaRepository.save(categoriaMapper);
 	}
 
 	@Override
@@ -62,6 +66,19 @@ public class CategoriaServiceImpl implements CategoriaService {
 		list.forEach(categorias::add);
 		return categorias;
 
+	}
+	
+	@Override
+	public List<Categoria> findCategoryProduct(List<Categoria> categoria) {
+		
+		List<Categoria> list = new ArrayList<>();
+		for (int i = 0; i < categoria.size(); i++) {
+			List<Categoria> categorias = categoriaRepository.findByName(categoria.get(i).getNome());
+			list.addAll(categorias);
+		}
+		return list;
+	
+		
 	}
 	
 	@Override

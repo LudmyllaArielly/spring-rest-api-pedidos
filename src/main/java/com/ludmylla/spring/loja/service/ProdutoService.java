@@ -14,5 +14,5 @@ public interface ProdutoService {
 
 	List<Product> list();
 
-	void findCategory(Product product);
+
 }

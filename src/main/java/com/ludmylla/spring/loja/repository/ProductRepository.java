@@ -18,4 +18,6 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
 	@Query("select u from Product u where lower(u.code) = lower(?1)")
 	List<Product> findByCode(String code);
+	
+	
 }

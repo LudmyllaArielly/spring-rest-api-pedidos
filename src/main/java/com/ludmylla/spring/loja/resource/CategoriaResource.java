@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.ludmylla.spring.loja.dto.CategoriaDto2;
 import com.ludmylla.spring.loja.dto.CategoriaPutDto;
+import com.ludmylla.spring.loja.mapper.CategoriaMapper;
 import com.ludmylla.spring.loja.model.Categoria;
 import com.ludmylla.spring.loja.service.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +66,9 @@ public class CategoriaResource {
 
     @PutMapping(path = "/categoria")
     public ResponseEntity<String> atualizar(CategoriaPutDto categoriaPutDto) {
-        categoriaService.atualizar(categoriaPutDto.getId(), categoriaPutDto.getNome());
+    	Categoria categoria = CategoriaMapper.INSTANCE
+    			.dtoPutCategoria(categoriaPutDto);
+        categoriaService.atualizar(categoria.getId(), categoria);
         return ResponseEntity.ok("ok");
     }
 
