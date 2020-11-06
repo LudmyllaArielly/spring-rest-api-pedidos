@@ -7,17 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ludmylla.spring.loja.model.Categoria;
+import com.ludmylla.spring.loja.model.Category;
 
 @Repository
 @Transactional
-public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
+public interface CategoryRepository extends JpaRepository<Category, Long> {
 	
-	@Query("select u from Categoria u where lower(u.nome) = lower(?1)")
-	List<Categoria> findByName(String nome);
-	
-	
+	@Query("select u from Category u where lower(u.name) = lower(?1)")
+	List<Category> findByName(String name);
 
-	
 
 }
