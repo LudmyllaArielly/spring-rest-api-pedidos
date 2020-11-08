@@ -2,11 +2,11 @@ package com.ludmylla.spring.loja.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.ludmylla.spring.loja.model.Category;
 import com.ludmylla.spring.loja.repository.CategoryRepository;
 
@@ -15,13 +15,21 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
 	private CategoryRepository categoryRepository ;
-
-	@Override
+	
 	@Transactional
+	@Override
 	public Long save(Category category) {
 		validations(category);
 		Category categorySave = categoryRepository.save(category);
 		return categorySave.getId();
+	}
+	
+	@Transactional
+	@Override
+	public void delete(Long id) {
+		Optional<Category> categories = categoryRepository.findById(id);
+		Category category = categories.get();
+		categoryRepository.delete(category);
 	}
 
 	@Override
