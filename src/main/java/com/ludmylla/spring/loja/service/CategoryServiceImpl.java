@@ -2,6 +2,7 @@ package com.ludmylla.spring.loja.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
@@ -30,6 +31,8 @@ public class CategoryServiceImpl implements CategoryService {
 	@Modifying
 	@Override
 	public Long update(Category category) {
+		validations(category);
+		validIfCategoryExists(category.getId());
 		Category categories = CategoryMapper.INSTANCE.ToCategoria(category);
 		categories = categoryRepository.save(categories);
 		return categories.getId();
@@ -49,13 +52,30 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	private void validations(Category category) {
-		validCategoryNameIsEmpty(category);
+		validIfTheCategoryNameIsNull(category);
+		validCategoryNameIsBlank(category);
+		
 	}
 
-	private void validCategoryNameIsEmpty(Category category) {		
+	private void validCategoryNameIsBlank(Category category) {		
 		boolean isNameBlank = category.getName().isBlank();
 		if (isNameBlank) {
 			throw new IllegalArgumentException("Name cannot be blank.");
+		}
+	}
+	
+	private void validIfTheCategoryNameIsNull(Category category) {
+		boolean isNameNull = category.getName() == null;
+		if(isNameNull) {
+			throw new IllegalArgumentException("Name cannot be null");
+		}
+	}
+	
+	private void validIfCategoryExists(Long id) {
+		Optional<Category> categories = categoryRepository.findById(id);
+		boolean isCategoryExits = categories.isEmpty();
+		if(isCategoryExits) {
+			throw new IllegalArgumentException("Category id does not exist");
 		}
 	}
 
