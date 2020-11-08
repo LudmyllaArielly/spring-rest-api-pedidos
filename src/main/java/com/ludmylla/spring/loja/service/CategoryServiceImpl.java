@@ -23,7 +23,16 @@ public class CategoryServiceImpl implements CategoryService {
 		Category categorySave = categoryRepository.save(category);
 		return categorySave.getId();
 	}
-
+	
+	@Override
+	public List<Category> list() {
+		List<Category> categories = new ArrayList<>();
+		List<Category> list = categoryRepository.findAll();
+		list.forEach(categories::add);
+		return list;
+	}
+	
+	@Transactional
 	@Override
 	public List<Category> findCategoryProduct(List<Category> category) {
 		
