@@ -27,6 +27,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Transactional
 	@Override
 	public void delete(Long id) {
+		validIfCategoryExists(id);
 		Optional<Category> categories = categoryRepository.findById(id);
 		Category category = categories.get();
 		categoryRepository.delete(category);
@@ -51,6 +52,14 @@ public class CategoryServiceImpl implements CategoryService {
 		boolean isNameBlank = category.getName().isBlank();
 		if (isNameBlank) {
 			throw new IllegalArgumentException("Name cannot be blank.");
+		}
+	}
+	
+	private void validIfCategoryExists(Long id) {
+		Optional<Category> categories = categoryRepository.findById(id);
+		boolean isCategoryExits = categories.isEmpty();
+		if(isCategoryExits) {
+			throw new IllegalArgumentException("Category id does not exist");
 		}
 	}
 
