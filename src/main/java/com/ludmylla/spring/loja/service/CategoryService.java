@@ -7,6 +7,8 @@ import com.ludmylla.spring.loja.model.Category;
 public interface CategoryService {
 
 	Long save(Category categoria);
+	
+	Long update(Category category);
 
 	List<Category> findCategoryProduct(List<Category> category);
 
