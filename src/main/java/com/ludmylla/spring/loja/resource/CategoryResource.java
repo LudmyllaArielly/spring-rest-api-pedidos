@@ -1,6 +1,7 @@
 package com.ludmylla.spring.loja.resource;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -8,11 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ludmylla.spring.loja.dto.CategoryInsertDto;
+import com.ludmylla.spring.loja.dto.CategoryListDto;
 import com.ludmylla.spring.loja.mapper.CategoryMapper;
 import com.ludmylla.spring.loja.model.Category;
 import com.ludmylla.spring.loja.service.CategoryService;
@@ -40,6 +43,20 @@ public class CategoryResource {
 		catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(" Failed to add: " + e.getMessage());
 		}
+	}
+	
+	@GetMapping(path = "/categories")
+	public ResponseEntity<List<CategoryListDto>> listAll(){
+		try {
+			List<Category> category = categoryService.list();
+			List<CategoryListDto> categories =
+					CategoryMapper.INSTANCE.dtoCategoryListDto(category);
+			
+			return ResponseEntity.ok(categories);
+			
+		}catch (Exception e) {
+			return ResponseEntity.notFound().build();
+		}		
 	}
 
 }
