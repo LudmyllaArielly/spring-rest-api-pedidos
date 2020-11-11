@@ -18,6 +18,6 @@ public interface CategoryMapper {
 	
     Category toCategoryUpdateDto(CategoryUpdateDto source);
 	
-	Category ToCategoria (Category source);
+
 
 }

@@ -33,7 +33,7 @@ public class CategoryResource {
 
 			Long id = categoryService.save(category);
 
-			return ResponseEntity.status(HttpStatus.CREATED).body(new Date() + " Category added: " + id);
+			return ResponseEntity.status(HttpStatus.CREATED).body(new Date() + " Category added, id: " + id);
 		
 		} catch (DataIntegrityViolationException ex) {
 			return ResponseEntity.status(HttpStatus.CONFLICT)
