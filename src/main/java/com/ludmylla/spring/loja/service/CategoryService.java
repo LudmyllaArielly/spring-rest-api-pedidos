@@ -8,6 +8,8 @@ public interface CategoryService {
 
 	Long save(Category categoria);
 	
+	Long update(Category category);
+
 	List<Category> list();
 
 	List<Category> findCategoryProduct(List<Category> category);

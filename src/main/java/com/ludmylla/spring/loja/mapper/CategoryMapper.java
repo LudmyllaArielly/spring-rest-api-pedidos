@@ -7,6 +7,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import com.ludmylla.spring.loja.dto.CategoryInsertDto;
+import com.ludmylla.spring.loja.dto.CategoryUpdateDto;
 import com.ludmylla.spring.loja.dto.CategoryListDto;
 import com.ludmylla.spring.loja.model.Category;
 
@@ -17,10 +18,13 @@ public interface CategoryMapper {
 
 	@Mapping(target = "id", ignore = true)
 	Category toCategoryInsertDto(CategoryInsertDto source);
+
+  Category toCategoryUpdateDto(CategoryUpdateDto source);
 	
 	@Mapping(target = "id", ignore = true)
 	Category toCategoryListDto(CategoryListDto source);
 	
 	List<CategoryListDto> dtoCategoryListDto(List<Category> source);
+
 
 }
