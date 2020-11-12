@@ -10,6 +10,8 @@ public interface CategoryService {
 	
 	Long update(Category category);
 
+	List<Category> list();
+
 	List<Category> findCategoryProduct(List<Category> category);
 
 }
