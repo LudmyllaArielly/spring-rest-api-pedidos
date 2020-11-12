@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.ludmylla.spring.loja.model.Category;
@@ -23,19 +24,37 @@ public class CategoryServiceImpl implements CategoryService {
 		Category categorySave = categoryRepository.save(category);
 		return categorySave.getId();
 	}
-	
+  
 	@Transactional
+	@Modifying
+	@Override
+	public Long update(Category category) {
+		validations(category);
+		validIfCategoryExists(category.getId());
+		Category categorySave = categoryRepository.save(category);
+		return categorySave.getId();
+	}
+
+	@Override
+	public List<Category> list() {
+		List<Category> categories = new ArrayList<>();
+		List<Category> list = categoryRepository.findAll();
+		list.forEach(categories::add);
+		return list;
+	}
+  
+  @Transactional
 	@Override
 	public void delete(Long id) {
 		validIfCategoryExists(id);
 		Optional<Category> categories = categoryRepository.findById(id);
 		Category category = categories.get();
 		categoryRepository.delete(category);
-	}
-
+  }
+	
+	@Transactional
 	@Override
 	public List<Category> findCategoryProduct(List<Category> category) {
-		
 		List<Category> list = new ArrayList<>();		
 		for (int i = 0; i < category.size(); i++) {
 			List<Category> categories = categoryRepository.findByName(category.get(i).getName());
@@ -45,13 +64,21 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	private void validations(Category category) {
-		validCategoryNameIsEmpty(category);
+		validIfTheCategoryNameIsNull(category);
+		validCategoryNameIsBlank(category);
 	}
 
-	private void validCategoryNameIsEmpty(Category category) {		
+	private void validCategoryNameIsBlank(Category category) {		
 		boolean isNameBlank = category.getName().isBlank();
 		if (isNameBlank) {
 			throw new IllegalArgumentException("Name cannot be blank.");
+		}
+	}
+	
+	private void validIfTheCategoryNameIsNull(Category category) {
+		boolean isNameNull = category.getName() == null;
+		if(isNameNull) {
+			throw new IllegalArgumentException("Name cannot be null");
 		}
 	}
 	
