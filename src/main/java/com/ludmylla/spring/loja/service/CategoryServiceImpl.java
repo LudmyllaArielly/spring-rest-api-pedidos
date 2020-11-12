@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.ludmylla.spring.loja.model.Category;
 import com.ludmylla.spring.loja.repository.CategoryRepository;
 
@@ -17,15 +16,15 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
 	private CategoryRepository categoryRepository ;
-
-	@Override
+	
 	@Transactional
+	@Override
 	public Long save(Category category) {
 		validations(category);
 		Category categorySave = categoryRepository.save(category);
 		return categorySave.getId();
 	}
-	
+  
 	@Transactional
 	@Modifying
 	@Override
@@ -43,11 +42,19 @@ public class CategoryServiceImpl implements CategoryService {
 		list.forEach(categories::add);
 		return list;
 	}
+  
+  @Transactional
+	@Override
+	public void delete(Long id) {
+		validIfCategoryExists(id);
+		Optional<Category> categories = categoryRepository.findById(id);
+		Category category = categories.get();
+		categoryRepository.delete(category);
+  }
 	
 	@Transactional
 	@Override
 	public List<Category> findCategoryProduct(List<Category> category) {
-		
 		List<Category> list = new ArrayList<>();		
 		for (int i = 0; i < category.size(); i++) {
 			List<Category> categories = categoryRepository.findByName(category.get(i).getName());
@@ -59,7 +66,6 @@ public class CategoryServiceImpl implements CategoryService {
 	private void validations(Category category) {
 		validIfTheCategoryNameIsNull(category);
 		validCategoryNameIsBlank(category);
-		
 	}
 
 	private void validCategoryNameIsBlank(Category category) {		

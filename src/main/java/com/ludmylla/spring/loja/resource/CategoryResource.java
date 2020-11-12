@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -63,6 +64,7 @@ public class CategoryResource {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 					.body(new Date() + " Failed to update: " + e.getMessage());
 		}
+  }
 
 	@GetMapping(path = "/categories")
 	public ResponseEntity<List<CategoryListDto>> listAll(){
@@ -77,5 +79,16 @@ public class CategoryResource {
 			return ResponseEntity.notFound().build();
 		}		
 	}
+    
+  @DeleteMapping(path = "/categories/{id}")
+	public ResponseEntity<String> delete(Long id) {
+		try {
+			categoryService.delete(id);
+			return ResponseEntity.status(HttpStatus.OK).body(new Date() +  " Successfully deleted: ");
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new Date() + " Failed to delete: " + e.getMessage());
+		}
+  }
 
 }
