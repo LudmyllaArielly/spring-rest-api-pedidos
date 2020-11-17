@@ -22,9 +22,7 @@ public class AddressFindViacepServiceImpl implements AddressFindViacepService {
 		validIfViacepAddressZipCodeIsNull(response);
 
 		return response;
-
 	}
-
 
 
 	private void validIfViacepAddressZipCodeIsNull(AddressFindViacepDto response) {
