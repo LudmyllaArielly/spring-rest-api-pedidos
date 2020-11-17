@@ -3,10 +3,13 @@ package com.ludmylla.spring.loja.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Person implements Serializable {
@@ -19,12 +22,9 @@ public class Person implements Serializable {
 
 	private String name;
 	private String cpf;
-	private String cep;
-	private String logradouro;
-	private String complemento;
-	private String bairro;
-	private String localidade;
-	private String uf;
+
+	@OneToOne(mappedBy = "person", cascade = CascadeType.ALL, optional = true, fetch = FetchType.EAGER)
+	private Address address;
 
 	public Long getId() {
 		return id;
@@ -50,54 +50,12 @@ public class Person implements Serializable {
 		this.cpf = cpf;
 	}
 
-	public String getCep() {
-		return cep;
+	public Address getAddress() {
+		return address;
 	}
 
-	public void setCep(String cep) {
-		this.cep = cep;
-	}
-	
-	
-
-	public String getLogradouro() {
-		return logradouro;
-	}
-
-	public void setLogradouro(String logradouro) {
-		this.logradouro = logradouro;
-	}
-
-	public String getComplemento() {
-		return complemento;
-	}
-
-	public void setComplemento(String complemento) {
-		this.complemento = complemento;
-	}
-
-	public String getBairro() {
-		return bairro;
-	}
-
-	public void setBairro(String bairro) {
-		this.bairro = bairro;
-	}
-
-	public String getLocalidade() {
-		return localidade;
-	}
-
-	public void setLocalidade(String localidade) {
-		this.localidade = localidade;
-	}
-
-	public String getUf() {
-		return uf;
-	}
-
-	public void setUf(String uf) {
-		this.uf = uf;
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 	@Override
@@ -127,11 +85,7 @@ public class Person implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Person [id=" + id + ", name=" + name + ", cpf=" + cpf + ", cep=" + cep + ", logradouro=" + logradouro
-				+ ", complemento=" + complemento + ", bairro=" + bairro + ", localidade=" + localidade + ", uf=" + uf
-				+ "]";
+		return "Person [id=" + id + ", name=" + name + ", cpf=" + cpf + ", address=" + address + "]";
 	}
-
-	
 
 }

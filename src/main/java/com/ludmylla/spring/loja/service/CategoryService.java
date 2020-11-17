@@ -12,7 +12,7 @@ public interface CategoryService {
 
 	List<Category> list();
   
-  void delete(Long id);
+    void delete(Long id);
 
 	List<Category> findCategoryProduct(List<Category> category);
 

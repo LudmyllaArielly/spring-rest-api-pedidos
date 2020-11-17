@@ -1,17 +1,16 @@
 package com.ludmylla.spring.loja.resource;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ludmylla.spring.loja.dto.AddressFindDto;
 import com.ludmylla.spring.loja.dto.PersonInsertDto;
 import com.ludmylla.spring.loja.dto.PersonUpdateDto;
 import com.ludmylla.spring.loja.mapper.PersonMapper;
@@ -25,26 +24,21 @@ public class PersonResource {
 	private PersonService personService;
 
 	@PostMapping(path = "/people")
-	public ResponseEntity<Long> save(@RequestBody PersonInsertDto personInsertDto) {
-		
+	public ResponseEntity<String> save(@RequestBody PersonInsertDto personInsertDto) {
+		try {
 		Person person = PersonMapper.INSTANCE.toPersonInsertDto(personInsertDto);
 
 		Long id = personService.save(person);
 
-		return ResponseEntity.ok(id);
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(new Date() + " Person added, id: " + id);
+		}catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new Date() + " Failed to add: " + e.getMessage());
+		}
 
 	}
 	
-	@GetMapping(path = "/people/{cep}")
-	public ResponseEntity<AddressFindDto> findCep(@PathVariable("cep") String cep){
-		Person person = new Person();
-		AddressFindDto addressSave = personService.findCep(person, cep);
-		
-		
-		return new ResponseEntity<AddressFindDto>(addressSave,HttpStatus.OK);
-	}
-	
-
 
 	@PutMapping(path = "/people")
 	public ResponseEntity<String> update(PersonUpdateDto personUpdateDto) {

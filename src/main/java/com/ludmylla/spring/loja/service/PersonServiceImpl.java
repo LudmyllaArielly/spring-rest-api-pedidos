@@ -1,19 +1,19 @@
 package com.ludmylla.spring.loja.service;
 
-import java.text.Collator;
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import com.ludmylla.spring.loja.dto.AddressFindDto;
+import com.ludmylla.spring.loja.dto.AddressFindViacepDto;
+import com.ludmylla.spring.loja.model.Address;
 import com.ludmylla.spring.loja.model.Person;
 import com.ludmylla.spring.loja.repository.PersonRepository;
 
@@ -23,49 +23,19 @@ public class PersonServiceImpl implements PersonService {
 	@Autowired
 	private PersonRepository personRepository;
 
+	@Autowired
+	private AddressFindViacepService addressFindViacepService;
+
 	@Override
 	@Transactional
 	public Long save(Person person) {
-		findCep(person, person.getCep());
+
+		validations(person.getAddress());
 		Person personSave = personRepository.save(person);
+		person.getAddress().setPerson(personSave);
 		return personSave.getId();
 	}
 	
-	@Override
-	public AddressFindDto findCep(Person person, String cep) {
-		RestTemplate restTemplate = new RestTemplate();
-		String uri = "http://viacep.com.br/ws/"+cep+"/json/";
-		ResponseEntity<AddressFindDto> addressFindDto = 
-				restTemplate.getForEntity(uri, AddressFindDto.class);
-		AddressFindDto response = addressFindDto.getBody();
-
-		validAdress(response, person);
-
-		
-		person.setBairro(response.getBairro());
-		person.setLocalidade(response.getLocalidade());
-		person.setUf(response.getUf());
-		
-		return response;
-	}
-	
-	private void validAdress(AddressFindDto response, Person person) {
-
-		Collator collator = Collator.getInstance(new Locale("pt", "BR"));
-		collator.setStrength(Collator.PRIMARY);
-		if(collator.compare(person.getLogradouro(), response.getLogradouro()) == 1) {
-			person.setLogradouro(response.getLogradouro());
-		}
-		
-		if(collator.compare(person.getComplemento(), response.getComplemento()) == 1) {
-			if(!response.getComplemento().isBlank()) {
-				person.setComplemento(response.getComplemento());
-			}
-		}
-
-	}
-
-
 	@Override
 	@Transactional
 	public List<Person> personList() {
@@ -93,7 +63,148 @@ public class PersonServiceImpl implements PersonService {
 		personRepository.delete(person);
 	}
 
+	private void validations(Address address) {
+		validIfTheAttributesOfTheAddressAreEqualToViacep(address);
+		validIfAddressAttributesIsblank(address);
+	}
 
 
+	@Transactional
+	private void validIfTheAttributesOfTheAddressAreEqualToViacep(Address address) {
+		AddressFindViacepDto addressFindViacepDtos = addressFindViacepService
+				.findZipCodeByViacep(address.getZipCode());
+
+		validAddressZipCodeEqualsViacep(address, addressFindViacepDtos);
+		validAddressStreetEqualsViacep(address, addressFindViacepDtos);
+		validAddressComplementEqualsViacep(address, addressFindViacepDtos);
+		validAddressDistrictEqualsViacep(address, addressFindViacepDtos);
+		validAddressLocaleEqualsViacep(address, addressFindViacepDtos);
+		validAddressStateEqualsViacep(address, addressFindViacepDtos);
+
+	}
+
+	private void validAddressZipCodeEqualsViacep(Address address, AddressFindViacepDto addressFindViacepDtos) {
+
+		String isAddressViacepCep = addressFindViacepDtos.getCep().replace("-", "");
+		String isAddressZipCode = address.getZipCode().replace("-", "");
+
+		if (!isAddressViacepCep.equals(isAddressZipCode)) {
+			throw new IllegalArgumentException("Incorrect zip code!");
+		}
+	}
+
+	private void validAddressStreetEqualsViacep(Address address, AddressFindViacepDto addressFindViacepDtos) {
+
+		boolean isAddressViacepLogradouroBlank = addressFindViacepDtos.getLogradouro().isBlank();
+		String isAddressViacepLogradouro = addressFindViacepDtos.getLogradouro();
+		String isAddressStreet = address.getStreet();
+
+		boolean isAddressViacepLogradouroEqualsAddressStreet = Pattern
+				.compile(Pattern.quote(removeAccents(isAddressViacepLogradouro)), Pattern.CASE_INSENSITIVE)
+				.matcher(removeAccents(isAddressStreet)).find();
+
+		if (!isAddressViacepLogradouroBlank) {
+			if (!isAddressViacepLogradouro.equalsIgnoreCase(isAddressStreet)) {
+				if (!isAddressViacepLogradouroEqualsAddressStreet) {
+					throw new IllegalArgumentException("Incorrect street!");
+				}
+			}
+		}
+	}
+
+	private void validAddressComplementEqualsViacep(Address address, AddressFindViacepDto addressFindViacepDtos) {
+
+		boolean isAddressViacepComplementoBlank = addressFindViacepDtos.getComplemento().isBlank();
+		String isAddressViacepComplemento = addressFindViacepDtos.getComplemento();
+		String isAddressComplement = address.getComplement();
+
+		boolean isAddressViacepComplementoEqualsAddressComplement = Pattern
+				.compile(Pattern.quote(removeAccents(isAddressViacepComplemento)), Pattern.CASE_INSENSITIVE)
+				.matcher(removeAccents(isAddressComplement)).find();
+
+		if (!isAddressViacepComplementoBlank) {
+			if (!isAddressViacepComplemento.equalsIgnoreCase(isAddressComplement)) {
+				if (!isAddressViacepComplementoEqualsAddressComplement) {
+					throw new IllegalArgumentException("Incorrect complement!");
+				}
+			}
+		}
+	}
+
+	private void validAddressDistrictEqualsViacep(Address address, AddressFindViacepDto addressFindViacepDtos) {
+
+		boolean isAddressViacepBairroBlank = addressFindViacepDtos.getBairro().isBlank();
+		String isAddressViacepBairro = addressFindViacepDtos.getBairro();
+		String isAddressDistrict = address.getDistrict();
+
+		boolean isAdressViacepBairroEqualsAddressDistrict = Pattern
+				.compile(Pattern.quote(removeAccents(isAddressViacepBairro)), Pattern.CASE_INSENSITIVE)
+				.matcher(removeAccents(isAddressDistrict)).find();
+
+		if (!isAddressViacepBairroBlank) {
+			if (!isAddressViacepBairro.equalsIgnoreCase(isAddressDistrict)) {
+				if (!isAdressViacepBairroEqualsAddressDistrict) {
+					throw new IllegalArgumentException("Incorrect district!");
+				}
+			}
+		}
+	}
+
+	private void validAddressLocaleEqualsViacep(Address address, AddressFindViacepDto addressFindViacepDtos) {
+
+		boolean isAddressViacepLocalidadeBlank = addressFindViacepDtos.getLocalidade().isBlank();
+		String isAddressViacepLocalidade = addressFindViacepDtos.getLocalidade();
+		String isAddressLocale = address.getLocale();
+
+		boolean isAddressViacepLocalidadeEqualsAddressLocale = Pattern
+				.compile(Pattern.quote(removeAccents(isAddressViacepLocalidade)), Pattern.CASE_INSENSITIVE)
+				.matcher(removeAccents(isAddressLocale)).find();
+
+		if (!isAddressViacepLocalidadeBlank) {
+			if (!isAddressViacepLocalidade.equalsIgnoreCase(isAddressLocale)) {
+				if (!isAddressViacepLocalidadeEqualsAddressLocale) {
+					throw new IllegalArgumentException("Incorrect locale");
+				}
+			}
+		}
+	}
+
+	private void validAddressStateEqualsViacep(Address address, AddressFindViacepDto addressFindViacepDtos) {
+
+		boolean isAddressViacepUfBlank = addressFindViacepDtos.getUf().isBlank();
+		String isAddressViacepUf = addressFindViacepDtos.getUf();
+		String isAddressState = address.getState();
+
+		boolean isAddressViacepUfEqualsAddressState = Pattern
+				.compile(Pattern.quote(removeAccents(isAddressViacepUf)), Pattern.CASE_INSENSITIVE)
+				.matcher(removeAccents(isAddressState)).find();
+
+		if (!isAddressViacepUfBlank) {
+			if (!isAddressViacepUf.equalsIgnoreCase(isAddressState)) {
+				if (!isAddressViacepUfEqualsAddressState) {
+					throw new IllegalArgumentException("Incorrect state");
+				}
+			}
+		}
+	}
+
+	private String removeAccents(String text) {
+		return text == null ? null
+				: Normalizer.normalize(text, Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+	}
+	
+	private void validIfAddressAttributesIsblank(Address address) {
+		boolean isZipCodeBlank = address.getZipCode().isBlank();
+		boolean isStreetBlank = address.getStreet().isBlank();
+		boolean isComplementBlank = address.getComplement().isBlank();
+		boolean isDistrictBlank = address.getDistrict().isBlank();
+		boolean isLocaleBlank = address.getLocale().isBlank();
+		boolean isStateBlank = address.getLocale().isBlank();
+		
+		if(isZipCodeBlank || isStreetBlank || isComplementBlank || isDistrictBlank
+				|| isLocaleBlank || isStateBlank) {
+			throw new IllegalArgumentException("There are one or more blank fields!");
+		}
+	}
 
 }

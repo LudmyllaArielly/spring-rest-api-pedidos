@@ -1,8 +1,6 @@
 package com.ludmylla.spring.loja.dto;
 
-
-
-public class AddressFindDto {
+public class AddressFindViacepDto {
 
 	private String cep;
 	private String logradouro;
@@ -10,7 +8,6 @@ public class AddressFindDto {
 	private String bairro;
 	private String localidade;
 	private String uf;
-
 
 	public String getCep() {
 		return cep;
