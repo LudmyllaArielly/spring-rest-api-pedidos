@@ -19,7 +19,7 @@ public interface CategoryMapper {
 	@Mapping(target = "id", ignore = true)
 	Category toCategoryInsertDto(CategoryInsertDto source);
 
-  Category toCategoryUpdateDto(CategoryUpdateDto source);
+  	Category toCategoryUpdateDto(CategoryUpdateDto source);
 	
 	@Mapping(target = "id", ignore = true)
 	Category toCategoryListDto(CategoryListDto source);
