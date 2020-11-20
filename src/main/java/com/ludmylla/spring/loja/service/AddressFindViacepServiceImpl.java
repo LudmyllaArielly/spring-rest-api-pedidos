@@ -10,11 +10,11 @@ import com.ludmylla.spring.loja.dto.AddressFindViacepDto;
 public class AddressFindViacepServiceImpl implements AddressFindViacepService {
 
 	@Override
-	public AddressFindViacepDto findZipCodeByViacep(String cep) {
-		validIfViacepAddressZipCodeIsBlank(cep);
+	public AddressFindViacepDto findZipCodeByViacep(String zipCode) {
+		validIfViacepAddressZipCodeIsBlank(zipCode);
 
 		RestTemplate restTemplate = new RestTemplate();
-		String uri = "http://viacep.com.br/ws/" + cep + "/json/";
+		String uri = "http://viacep.com.br/ws/" + zipCode + "/json/";
 		ResponseEntity<AddressFindViacepDto> addressFindViacepDto = restTemplate.getForEntity(uri,
 				AddressFindViacepDto.class);
 		AddressFindViacepDto response = addressFindViacepDto.getBody();
@@ -26,15 +26,15 @@ public class AddressFindViacepServiceImpl implements AddressFindViacepService {
 
 
 	private void validIfViacepAddressZipCodeIsNull(AddressFindViacepDto response) {
-		boolean isAddressZipCodeOfViacepNull = response.getCep() == null;
+		boolean isAddressZipCodeOfViacepNull = response.getZipCode() == null;
 
 		if (isAddressZipCodeOfViacepNull) {
 			throw new IllegalArgumentException("Zip code does not exist or is incorrect!");
 		}
 	}
 
-	private void validIfViacepAddressZipCodeIsBlank(String cep) {
-		boolean isAddressZipCodeOfViacepBlank = cep.isBlank();
+	private void validIfViacepAddressZipCodeIsBlank(String zipCode) {
+		boolean isAddressZipCodeOfViacepBlank = zipCode.isBlank();
 
 		if (isAddressZipCodeOfViacepBlank) {
 			throw new IllegalArgumentException("Zip cannot be blank!");

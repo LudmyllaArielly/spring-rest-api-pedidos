@@ -22,8 +22,8 @@ public class Address implements Serializable {
 	private String complement;
 	private String district;
 	private String locale;
-	private String state;	
-	
+	private String uf;
+
 	@OneToOne
 	@JoinColumn(name = "PERSON_ID")
 	private Person person;
@@ -76,12 +76,12 @@ public class Address implements Serializable {
 		this.locale = locale;
 	}
 
-	public String getState() {
-		return state;
+	public String getUf() {
+		return uf;
 	}
 
-	public void setState(String state) {
-		this.state = state;
+	public void setUf(String uf) {
+		this.uf = uf;
 	}
 
 	public Person getPerson() {
@@ -120,7 +120,7 @@ public class Address implements Serializable {
 	@Override
 	public String toString() {
 		return "Address [id=" + id + ", zipCode=" + zipCode + ", street=" + street + ", complement=" + complement
-				+ ", district=" + district + ", locale=" + locale + ", state=" + state + ", person=" + person + "]";
+				+ ", district=" + district + ", locale=" + locale + ", uf=" + uf + ", person=" + person + "]";
 	}
 
 }

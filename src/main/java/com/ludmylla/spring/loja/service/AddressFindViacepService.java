@@ -4,6 +4,6 @@ import com.ludmylla.spring.loja.dto.AddressFindViacepDto;
 
 public interface AddressFindViacepService {
 
-	AddressFindViacepDto findZipCodeByViacep(String cep);
+	AddressFindViacepDto findZipCodeByViacep(String zipCode);
 
 }

@@ -1,52 +1,59 @@
 package com.ludmylla.spring.loja.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class AddressFindViacepDto {
 
-	private String cep;
-	private String logradouro;
-	private String complemento;
-	private String bairro;
-	private String localidade;
+	@JsonProperty("cep")
+	private String zipCode;
+	@JsonProperty("logradouro")
+	private String street;
+	@JsonProperty("complemento")
+	private String complement;
+	@JsonProperty("bairro")
+	private String district;
+	@JsonProperty("localidade")
+	private String locale;
 	private String uf;
 
-	public String getCep() {
-		return cep;
+	public String getZipCode() {
+		return zipCode;
 	}
 
-	public void setCep(String cep) {
-		this.cep = cep;
+	public void setZipCode(String zipCode) {
+		this.zipCode = zipCode;
 	}
 
-	public String getLogradouro() {
-		return logradouro;
+	public String getStreet() {
+		return street;
 	}
 
-	public void setLogradouro(String logradouro) {
-		this.logradouro = logradouro;
+	public void setStreet(String street) {
+		this.street = street;
 	}
 
-	public String getComplemento() {
-		return complemento;
+	public String getComplement() {
+		return complement;
 	}
 
-	public void setComplemento(String complemento) {
-		this.complemento = complemento;
+	public void setComplement(String complement) {
+		this.complement = complement;
 	}
 
-	public String getBairro() {
-		return bairro;
+	public String getDistrict() {
+		return district;
 	}
 
-	public void setBairro(String bairro) {
-		this.bairro = bairro;
+	public void setDistrict(String district) {
+		this.district = district;
 	}
 
-	public String getLocalidade() {
-		return localidade;
+	public String getLocale() {
+		return locale;
 	}
 
-	public void setLocalidade(String localidade) {
-		this.localidade = localidade;
+	public void setLocale(String locale) {
+		this.locale = locale;
 	}
 
 	public String getUf() {

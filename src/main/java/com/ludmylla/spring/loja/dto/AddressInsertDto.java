@@ -7,8 +7,7 @@ public class AddressInsertDto {
 	private String complement;
 	private String district;
 	private String locale;
-	private String state;
-
+	private String uf;
 
 	public String getZipCode() {
 		return zipCode;
@@ -50,13 +49,12 @@ public class AddressInsertDto {
 		this.locale = locale;
 	}
 
-	public String getState() {
-		return state;
+	public String getUf() {
+		return uf;
 	}
 
-	public void setState(String state) {
-		this.state = state;
+	public void setUf(String uf) {
+		this.uf = uf;
 	}
 
-	
 }
