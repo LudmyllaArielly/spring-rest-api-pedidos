@@ -1,5 +1,6 @@
 package com.ludmylla.spring.loja.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -9,12 +10,16 @@ import com.ludmylla.spring.loja.dto.AddressFindViacepDto;
 @Service
 public class AddressFindViacepServiceImpl implements AddressFindViacepService {
 
+	@Value("${com.viacep.br.url}")
+	private String basePath;
+
 	@Override
 	public AddressFindViacepDto findZipCodeByViacep(String zipCode) {
+
 		validIfViacepAddressZipCodeIsBlank(zipCode);
 
 		RestTemplate restTemplate = new RestTemplate();
-		String uri = "http://viacep.com.br/ws/" + zipCode + "/json/";
+		String uri = basePath + zipCode + "/json/";
 		ResponseEntity<AddressFindViacepDto> addressFindViacepDto = restTemplate.getForEntity(uri,
 				AddressFindViacepDto.class);
 		AddressFindViacepDto response = addressFindViacepDto.getBody();
