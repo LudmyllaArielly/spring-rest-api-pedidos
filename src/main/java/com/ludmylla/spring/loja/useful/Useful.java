@@ -19,4 +19,16 @@ public class Useful {
 				.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
 	}
 	
+	public static void compareAddressIsCorrect(boolean compareBlank, String compare1, String compare2,
+			boolean compareCaseInsensitiveAndContains, String msg) {
+		
+		if(!compareBlank && !compare1.equalsIgnoreCase(compare2)
+				&& !compareCaseInsensitiveAndContains) {
+			
+			 throw new IllegalArgumentException(msg);
+		}
+	}
+	
+	
+	
 }

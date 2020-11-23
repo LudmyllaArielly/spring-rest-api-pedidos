@@ -66,7 +66,6 @@ public class PersonServiceImpl implements PersonService {
 		validIfAddressAttributesIsblank(address);
 	}
 
-
 	@Transactional
 	private void validIfTheAttributesOfTheAddressAreEqualToViacep(Address address) {
 		AddressFindViacepDto addressFindViacepDtos = addressFindViacepService
@@ -78,7 +77,6 @@ public class PersonServiceImpl implements PersonService {
 		validAddressDistrictEqualsViacep(address, addressFindViacepDtos);
 		validAddressLocaleEqualsViacep(address, addressFindViacepDtos);
 		validAddressStateEqualsViacep(address, addressFindViacepDtos);
-
 	}
 
 	private void validAddressZipCodeEqualsViacep(Address address, AddressFindViacepDto addressFindViacepDtos) {
@@ -99,14 +97,10 @@ public class PersonServiceImpl implements PersonService {
 
 		boolean isAddressViacepStreetEqualsAddressStreet =	
 				Useful.compareCaseSensitiveAndCheckToQuote(isAddressViacepStreet, isAddressStreet);
-
-		if (!isAddressViacepStreetBlank) {
-			if (!isAddressViacepStreet.equalsIgnoreCase(isAddressStreet)) {
-				if (!isAddressViacepStreetEqualsAddressStreet) {
-					throw new IllegalArgumentException("Incorrect street!");
-				}
-			}
-		}
+	
+		Useful.compareAddressIsCorrect(
+				isAddressViacepStreetBlank, isAddressViacepStreet, isAddressStreet, 
+				isAddressViacepStreetEqualsAddressStreet, "Incorrect Street!");	
 	}
 
 	private void validAddressComplementEqualsViacep(Address address, AddressFindViacepDto addressFindViacepDtos) {
@@ -117,14 +111,10 @@ public class PersonServiceImpl implements PersonService {
 
 		boolean isAddressViacepComplementEqualsAddressComplement = 
 				Useful.compareCaseSensitiveAndCheckToQuote(isAddressViacepComplement, isAddressComplement);
-
-		if (!isAddressViacepComplementBlank) {
-			if (!isAddressViacepComplement.equalsIgnoreCase(isAddressComplement)) {
-				if (!isAddressViacepComplementEqualsAddressComplement) {
-					throw new IllegalArgumentException("Incorrect complement!");
-				}
-			}
-		}
+	
+		Useful.compareAddressIsCorrect(
+				isAddressViacepComplementBlank, isAddressViacepComplement, isAddressComplement, 
+				isAddressViacepComplementEqualsAddressComplement, "Incorrect complement!");	
 	}
 
 	private void validAddressDistrictEqualsViacep(Address address, AddressFindViacepDto addressFindViacepDtos) {
@@ -136,14 +126,9 @@ public class PersonServiceImpl implements PersonService {
 		boolean isAdressViacepDistrictEqualsAddressDistrict = 
 				Useful.compareCaseSensitiveAndCheckToQuote(isAddressViacepDistrict, isAddressDistrict);
 				
-
-		if (!isAddressViacepDistrictBlank) {
-			if (!isAddressViacepDistrict.equalsIgnoreCase(isAddressDistrict)) {
-				if (!isAdressViacepDistrictEqualsAddressDistrict) {
-					throw new IllegalArgumentException("Incorrect district!");
-				}
-			}
-		}
+		Useful.compareAddressIsCorrect(
+				isAddressViacepDistrictBlank, isAddressViacepDistrict, isAddressDistrict, 
+				isAdressViacepDistrictEqualsAddressDistrict, "Incorrect district!");	
 	}
 
 	private void validAddressLocaleEqualsViacep(Address address, AddressFindViacepDto addressFindViacepDtos) {
@@ -155,13 +140,9 @@ public class PersonServiceImpl implements PersonService {
 		boolean isAddressViacepLocaleEqualsAddressLocale = 
 				Useful.compareCaseSensitiveAndCheckToQuote(isAddressViacepLocale, isAddressLocale);
 
-		if (!isAddressViacepLocaleBlank) {
-			if (!isAddressViacepLocale.equalsIgnoreCase(isAddressLocale)) {
-				if (!isAddressViacepLocaleEqualsAddressLocale) {
-					throw new IllegalArgumentException("Incorrect locale");
-				}
-			}
-		}
+		Useful.compareAddressIsCorrect(
+				isAddressViacepLocaleBlank, isAddressViacepLocale, isAddressLocale, 
+				isAddressViacepLocaleEqualsAddressLocale, "Incorrect locale!");
 	}
 
 	private void validAddressStateEqualsViacep(Address address, AddressFindViacepDto addressFindViacepDtos) {
@@ -173,15 +154,10 @@ public class PersonServiceImpl implements PersonService {
 		boolean isAddressViacepUfEqualsAddressState = 
 				Useful.compareCaseSensitiveAndCheckToQuote(isAddressViacepUf, isAddressUf);
 
-		if (!isAddressViacepUfBlank) {
-			if (!isAddressViacepUf.equalsIgnoreCase(isAddressUf)) {
-				if (!isAddressViacepUfEqualsAddressState) {
-					throw new IllegalArgumentException("Incorrect state");
-				}
-			}
-		}
+		Useful.compareAddressIsCorrect(
+				isAddressViacepUfBlank, isAddressViacepUf,isAddressUf, 
+				isAddressViacepUfEqualsAddressState, "Incorrect uf!");
 	}
-	
 	
 	private void validIfAddressAttributesIsblank(Address address) {
 		boolean isZipCodeBlank = address.getZipCode().isBlank();
