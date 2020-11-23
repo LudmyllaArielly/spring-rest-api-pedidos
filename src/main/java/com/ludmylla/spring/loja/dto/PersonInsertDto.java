@@ -1,9 +1,10 @@
 package com.ludmylla.spring.loja.dto;
 
 public class PersonInsertDto {
-	
+
 	private String name;
 	private String cpf;
+	private AddressInsertDto addressInsertDto;
 
 	public String getName() {
 		return name;
@@ -19,6 +20,14 @@ public class PersonInsertDto {
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
+	}
+
+	public AddressInsertDto getAddressInsertDto() {
+		return addressInsertDto;
+	}
+
+	public void setAddressInsertDto(AddressInsertDto addressInsertDto) {
+		this.addressInsertDto = addressInsertDto;
 	}
 
 }

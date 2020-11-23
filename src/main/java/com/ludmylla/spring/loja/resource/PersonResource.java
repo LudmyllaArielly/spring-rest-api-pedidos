@@ -1,6 +1,9 @@
 package com.ludmylla.spring.loja.resource;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,47 +24,21 @@ public class PersonResource {
 	private PersonService personService;
 
 	@PostMapping(path = "/people")
-	public ResponseEntity<Long> save(@RequestBody PersonInsertDto personInsertDto) {
+	public ResponseEntity<String> save(@RequestBody PersonInsertDto personInsertDto) {
+		try {
+		Person person = PersonMapper.INSTANCE.toPersonInsertDto(personInsertDto);
 
-		Person person = PersonMapper.INSTANCE
-				.toPersonInsertDto(personInsertDto);
+		 personService.save(person);
 
-
-		Long id = personService.save(person);
-		return ResponseEntity.ok(id);
-
-	}
-/*
-	@PostMapping(path = "/cadastroCliente")
-	public ResponseEntity<String> cadastrarCliente(@RequestBody PersonInsertDto pessoaDto) {
-		// validaçoes
-		// banco verificação
-		// salvei
-		// retonei
-		// exibindo a msg
-		return ResponseEntity.ok("cliente cadastro");
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(new Date() + " Person added: ");
+		}catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+					.body(new Date() + " Failed to add: " + e.getMessage());
+		}
 
 	}
-*/
-	/*@GetMapping(path = "/people")
-	public ResponseEntity<List<PersonListDto>> personList() {
-
-		/*List<Person> people = personService.personList();
-		List<PersonListDto> list = PersonMapper.INSTANCE
-				.dtoListPersonList(people);
-
-//        List<PessoaGetDto> result = new ArrayList<>();
-//        for (int i = 0; i < pessoas.size(); i++) {
-//            PessoaGetDto pessoaGetDto = new PessoaGetDto();
-//            pessoaGetDto.setCpf(pessoas.get(i).getCpf());
-//            pessoaGetDto.setName(pessoas.get(i).getName());
-//            result.add(pessoaGetDto);
-//
-//        }
-
-		return ResponseEntity.ok(list);
-
-	}*/
+	
 
 	@PutMapping(path = "/people")
 	public ResponseEntity<String> update(PersonUpdateDto personUpdateDto) {

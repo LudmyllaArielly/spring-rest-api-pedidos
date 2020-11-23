@@ -3,10 +3,13 @@ package com.ludmylla.spring.loja.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Person implements Serializable {
@@ -16,9 +19,12 @@ public class Person implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String name;
 	private String cpf;
+
+	@OneToOne(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private Address address;
 
 	public Long getId() {
 		return id;
@@ -42,6 +48,14 @@ public class Person implements Serializable {
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
+	}
+
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 	@Override
@@ -71,7 +85,7 @@ public class Person implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Person [id=" + id + ", name=" + name + ", cpf=" + cpf + "]";
+		return "Person [id=" + id + ", name=" + name + ", cpf=" + cpf + ", address=" + address + "]";
 	}
 
 }
