@@ -23,7 +23,7 @@ public class Person implements Serializable {
 	private String name;
 	private String cpf;
 
-	@OneToOne(mappedBy = "person", cascade = CascadeType.ALL, optional = true, fetch = FetchType.EAGER)
+	@OneToOne(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Address address;
 
 	public Long getId() {

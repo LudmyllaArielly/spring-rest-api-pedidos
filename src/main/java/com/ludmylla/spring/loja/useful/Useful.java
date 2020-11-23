@@ -5,8 +5,8 @@ import java.text.Normalizer.Form;
 import java.util.regex.Pattern;
 
 public class Useful {
-	
-	public static boolean compareCaseSensitiveAndCheckToQuote(String compare1, String compare2) {
+
+	public static boolean compareCaseSensitiveAndFindSimilarity(String compare1, String compare2) {
 		boolean isAddressViacepIsEqualAddress = Pattern
 		.compile(Pattern.quote(removeAccents(compare1)), Pattern.CASE_INSENSITIVE)
 		.matcher(removeAccents(compare2)).find();
@@ -24,11 +24,8 @@ public class Useful {
 		
 		if(!compareBlank && !compare1.equalsIgnoreCase(compare2)
 				&& !compareCaseInsensitiveAndContains) {
-			
 			 throw new IllegalArgumentException(msg);
 		}
 	}
-	
-	
 	
 }

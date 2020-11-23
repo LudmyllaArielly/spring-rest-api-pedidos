@@ -28,10 +28,10 @@ public class PersonResource {
 		try {
 		Person person = PersonMapper.INSTANCE.toPersonInsertDto(personInsertDto);
 
-		Long id = personService.save(person);
+		 personService.save(person);
 
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(new Date() + " Person added, id: " + id);
+				.body(new Date() + " Person added: ");
 		}catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 					.body(new Date() + " Failed to add: " + e.getMessage());

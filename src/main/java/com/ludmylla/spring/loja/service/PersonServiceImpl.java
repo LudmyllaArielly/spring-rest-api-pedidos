@@ -96,7 +96,7 @@ public class PersonServiceImpl implements PersonService {
 		String isAddressStreet = address.getStreet();
 
 		boolean isAddressViacepStreetEqualsAddressStreet =	
-				Useful.compareCaseSensitiveAndCheckToQuote(isAddressViacepStreet, isAddressStreet);
+				Useful.compareCaseSensitiveAndFindSimilarity(isAddressViacepStreet, isAddressStreet);
 	
 		Useful.compareAddressIsCorrect(
 				isAddressViacepStreetBlank, isAddressViacepStreet, isAddressStreet, 
@@ -110,7 +110,7 @@ public class PersonServiceImpl implements PersonService {
 		String isAddressComplement = address.getComplement();
 
 		boolean isAddressViacepComplementEqualsAddressComplement = 
-				Useful.compareCaseSensitiveAndCheckToQuote(isAddressViacepComplement, isAddressComplement);
+				Useful.compareCaseSensitiveAndFindSimilarity(isAddressViacepComplement, isAddressComplement);
 	
 		Useful.compareAddressIsCorrect(
 				isAddressViacepComplementBlank, isAddressViacepComplement, isAddressComplement, 
@@ -124,7 +124,7 @@ public class PersonServiceImpl implements PersonService {
 		String isAddressDistrict = address.getDistrict();
 
 		boolean isAdressViacepDistrictEqualsAddressDistrict = 
-				Useful.compareCaseSensitiveAndCheckToQuote(isAddressViacepDistrict, isAddressDistrict);
+				Useful.compareCaseSensitiveAndFindSimilarity(isAddressViacepDistrict, isAddressDistrict);
 				
 		Useful.compareAddressIsCorrect(
 				isAddressViacepDistrictBlank, isAddressViacepDistrict, isAddressDistrict, 
@@ -138,7 +138,7 @@ public class PersonServiceImpl implements PersonService {
 		String isAddressLocale = address.getLocale();
 
 		boolean isAddressViacepLocaleEqualsAddressLocale = 
-				Useful.compareCaseSensitiveAndCheckToQuote(isAddressViacepLocale, isAddressLocale);
+				Useful.compareCaseSensitiveAndFindSimilarity(isAddressViacepLocale, isAddressLocale);
 
 		Useful.compareAddressIsCorrect(
 				isAddressViacepLocaleBlank, isAddressViacepLocale, isAddressLocale, 
@@ -152,7 +152,7 @@ public class PersonServiceImpl implements PersonService {
 		String isAddressUf = address.getUf();
 
 		boolean isAddressViacepUfEqualsAddressState = 
-				Useful.compareCaseSensitiveAndCheckToQuote(isAddressViacepUf, isAddressUf);
+				Useful.compareCaseSensitiveAndFindSimilarity(isAddressViacepUf, isAddressUf);
 
 		Useful.compareAddressIsCorrect(
 				isAddressViacepUfBlank, isAddressViacepUf,isAddressUf, 
