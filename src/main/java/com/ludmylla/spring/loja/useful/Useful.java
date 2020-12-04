@@ -28,4 +28,14 @@ public class Useful {
 		}
 	}
 	
+	public static void validIfAddressIsEqualsViacep(String AddressFindViacepDto, String address) {
+		boolean AddressFindViacepDtoBlank = AddressFindViacepDto.isBlank();
+		
+		boolean isAddressViacepEqualsAddress =	
+				Useful.compareCaseSensitiveAndFindSimilarity(AddressFindViacepDto, address);
+		
+		Useful.compareAddressIsCorrect(
+				AddressFindViacepDtoBlank, AddressFindViacepDto, address, 
+				isAddressViacepEqualsAddress, "Check incorrect address!");	
+	}
 }
