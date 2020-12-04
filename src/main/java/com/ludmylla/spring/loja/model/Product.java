@@ -47,7 +47,7 @@ public class Product implements Serializable {
 	@NotNull(message = "The quantity cannot be zero!")
 	private Integer quantity;
 
-	@NotNull
+	
 	@ManyToMany
 	@JoinColumn(name = "CATEGORY_ID")
 	@OnDelete(action = OnDeleteAction.CASCADE)

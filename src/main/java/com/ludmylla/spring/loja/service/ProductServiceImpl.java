@@ -1,10 +1,13 @@
 package com.ludmylla.spring.loja.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +35,39 @@ public class ProductServiceImpl implements ProductService {
 
 		return productSave.getId();
 	}
+	
+	@Override
+	@Transactional
+	public List<Product> listAll(){
+		List<Product> products = new ArrayList<>();
+		Iterable<Product> list = productRepository.findAll();
+		list.forEach(products::add);		
+		return (List<Product>) list;
+	}
+	
+	
+	@Modifying
+	@Transactional
+	@Override
+	public void update(Product product) {
+		validIfProductExits(product.getId());
+		validations(product);
+		List<Category> categories = categoryService.findCategoryProduct(product.getCategories());
+		product.setCategories(categories);
+		Optional<Product> products = productRepository.findById(product.getId());
+		product = products.get();		
+		productRepository.save(product);
+	
+	}
+	
+	@Transactional
+	@Override
+	public void delete(Long id) {
+		validIfProductExits(id);
+		Optional<Product> product = productRepository.findById(id);
+		Product products = product.get();
+		productRepository.delete(products);
+	}
 
 	private void validations(Product product) {
 		validIfProductAttributesIsEmpty(product);
@@ -40,7 +76,8 @@ public class ProductServiceImpl implements ProductService {
 		validIfProductListCategoryEmpty(product);
 		validIfProductPriceIsEqualToZero(product);
 	}
-
+	
+	
 	private void validIfProductAttributesIsEmpty(Product product) {
 
 		boolean isNameBlank = product.getName().isBlank();
@@ -79,6 +116,15 @@ public class ProductServiceImpl implements ProductService {
 		boolean priceEqualZero = product.getPrice().compareTo(BigDecimal.ZERO) <= 0;
 		if (priceEqualZero) {
 			throw new IllegalArgumentException("Price: cannot be zero!");
+		}
+	}
+	
+	private void validIfProductExits(Long id) {
+		Optional<Product> product = productRepository.findById(id);
+		boolean isProductExists = product.isEmpty();
+		
+		if(isProductExists) {
+			throw new NoSuchElementException("This product does not exist!");
 		}
 	}
 
